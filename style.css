@@ -1,0 +1,48 @@
+/* style.css */
+body {
+  font-family: Arial, Comic Sans MS;
+}
+
+#search-form {
+  width: 50%;
+  margin: 10px auto;
+}
+
+#search-input {
+  width: 80%;
+  padding: 10px;
+  font-size: 16px;
+}
+
+#search-button {
+  width: 40%;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #4169E1;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+#resources-container {
+  margin-top: 20px;
+}
+
+h1 {
+  color:#fff;
+  border: 5px solid #4169E6;
+  background-color: #4169F9;
+}
+
+h2 {
+  
+  font: Comic Sans MS;
+  color: #0277;
+}
+
+.topo {
+  display: block;       /* transforma em bloco */
+  margin: 0 auto;       /* centraliza horizontalmente */
+  margin-top: 0px;     /* distância do topo */
+  width: 75px;         /* tamanho da imagem */
+}

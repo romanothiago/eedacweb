@@ -1,0 +1,136 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>eedacweb.com</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<img src="foguetin.png" alt="" class="topo">
+<body>
+  <h1>EEDAC Web</h1>
+  <h2>Saiba das novidades da nossa escola!</h2>
+  <form id="search-form">
+    <input type="text" id="search-input" placeholder="Buscar conteúdo...">
+    <button id="search-button">Buscar</button>
+  </form>
+  <div id="resources-container">
+    <!-- Recursos educacionais serão exibidos aqui -->
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Site com Slideshow</title>
+  <style>
+    }
+
+    button {
+      padding: 8px 12px;
+      background: #1a73e8;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    /* Slideshow */
+    .slideshow {
+      width: 100%;
+      max-width: 800px;
+      aspect-ratio: 16 / 9;
+      margin: 10px auto;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      position: relative;
+    }
+
+    .slides {
+      display: flex;
+      width: 300%;
+      animation: troca 90s infinite;
+    }
+
+    .slides img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+       @keyframes troca {
+      0% { transform: translateX(0); }
+      33% { transform: translateX(-100%); }
+      66% { transform: translateX(-200%); }
+      100% { transform: translateX(0); }
+    }
+}
+    }
+
+    /* Esconder slideshow */
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Slideshow -->
+  <div id="slideshow" class="slideshow">
+    <div class="slides">
+      <img src="foto1.png" alt="Foto 1">
+      <img src="foto2.png" alt="Foto 2">
+      <img src="foto3.png" alt="Foto 3">
+    </div>
+  </div>
+
+  <script>
+    function esconderSlideshow() {
+      document.getElementById("slideshow").classList.add("hidden");
+    }
+    
+    <img id="slideshow" src="foto1.png" alt="" width="300">
+
+<script>
+const imagens = ["foto1.png", "foto2.png", "foto3.png"];
+let indice = 0;
+
+const slideshow = document.getElementById("slideshow");
+
+function mudarImagem() {
+    indice = (indice + 1) % imagens.length; // Faz o loop direto
+    slideshow.src = imagens[indice];
+}
+
+// Troca de imagem a cada 3 segundos (3000ms)
+setInterval(mudarImagem, 300);
+</script>
+    
+  </script>
+
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro e Login</title>
+</head>
+<body>
+  <!-- Formulário de cadastro -->
+  <form id="register-form">
+    <input type="text" id="username" placeholder="Nome de usuário">
+    <input type="email" id="email" placeholder="E-mail">
+    <input type="password" id="password" placeholder="Senha">
+    <button id="register-button" type="button">Cadastrar</button>
+  </form>
+
+  <!-- Formulário de login -->
+  <form id="login-form">
+    <input type="text" id="username-login" placeholder="Nome de usuário">
+    <input type="password" id="password-login" placeholder="Senha">
+    <button id="login-button" type="button">Entrar</button>
+  </form>
+
+  <script src="script.js"></script>
+</body>
+</html>
