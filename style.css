@@ -67,3 +67,21 @@ h2 {
   text-align: center;
   margin-top: 10px;
 }
+
+.slide {
+  display: none; /* esconde todas as imagens */
+}
+
+/* Botões de troca de imagens */
+.controls {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.controls button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px 15px;
+}
