@@ -9,24 +9,24 @@ const generalResources = [
 const subjectResources = {
   "Matemática": [
     {
-      title: "Vídeo Aula 1",
+      title: "Matemática 1",
       type: "video",
       url: "https://youtu.be/qd2Hx8o0c4s?si=sNRg2BEN1vLJogmr"
     },
     {
-      title: "Conteúdo Escrito 1",
+      title: "Matemática Escrita 1",
       type: "text",
       content: "A prova de que 1+1=2"
     }
   ],
   "Português": [
     {
-      title: "Vídeo Aula 2",
+      title: "filosofia 1",
       type: "video",
       url: "https://youtu.be/RJFEpfiVwIk?si=-1QG94Dh7-wKytte"
     },
     {
-      title: "Conteúdo Escrito 2",
+      title: "filosofia Escrita 2",
       type: "text",
       content: "O vídeo apresenta o tema 'liberdade' e se aprofunda no signifacado do termo."
     }
@@ -143,3 +143,23 @@ function displayWrittenContent() {
 // Carregar aulas e conteúdos escritos
 displayVideoLessons();
 displayWrittenContent();
+
+let slideIndex = 0; // começa do zero
+
+mostrarSlide(slideIndex); // chama a função logo no início
+
+function mudarSlide(n) {
+  mostrarSlide(slideIndex += n);
+}
+
+function mostrarSlide(n) {
+  let slides = document.getElementsByClassName("slide");
+  if (n >= slides.length) { slideIndex = 0; }
+  if (n < 0) { slideIndex = slides.length - 1; }
+  for (let i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none"; // esconde tudo
+  }
+  slides[slideIndex].style.display = "block"; // mostra só o atual
+}
+
+mostrarSlide(slideIndex);
