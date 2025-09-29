@@ -1,3 +1,4 @@
+/* ================== BASE ================== */
 body {
   font-family: Arial, "Comic Sans MS";
   background: #f5f7fb;
@@ -10,6 +11,7 @@ body {
   margin: 0 auto 12px;
 }
 
+/* ================== SEARCH ================== */
 #search-form {
   width: 90%;
   max-width: 700px;
@@ -37,21 +39,23 @@ body {
   cursor: pointer;
 }
 
-#resources-container {
-  margin-top: 20px;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
+#search-results {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 5px;
 }
 
-.resource {
-  padding: 12px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-  margin-bottom: 10px;
+#search-results li {
+  padding: 3px 5px;
+  border-bottom: 1px solid #ddd;
 }
 
+#search-results li a {
+  text-decoration: none;
+  color: #0077cc;
+}
+
+/* ================== HEADER ================== */
 h1 {
   color: #fff;
   border: 5px solid #4169E6;
@@ -68,11 +72,11 @@ h2 {
   margin-top: 10px;
 }
 
+/* ================== SLIDESHOW ================== */
 .slide {
-  display: none; /* esconde todas as imagens */
+  display: none;
 }
 
-/* Botões de troca de imagens */
 .controls {
   margin-top: 10px;
   text-align: center;
@@ -84,4 +88,244 @@ h2 {
   font-size: 24px;
   cursor: pointer;
   padding: 5px 15px;
+}
+
+/* ================== MODALS ================== */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+  background: #fff;
+  margin: 8% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.modal-content textarea {
+  font-family: monospace;
+  width: 100%;
+  height: 100px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.close {
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ================== BUTTONS ================== */
+#open-modal {
+  padding: 10px 20px;
+  background-color: #4169E1;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Social buttons */
+.social-buttons {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.social-buttons .btn {
+  display: inline-block;
+  margin: 5px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #fff;
+  transition: 0.3s;
+}
+
+.social-buttons .btn i {
+  margin-right: 8px;
+}
+
+.instagram { background: #E4409F; }
+.facebook { background: #1877F2; }
+.youtube { background: #FF0000; }
+
+.social-buttons .btn:hover {
+  opacity: 0.8;
+}
+
+/* ================== FOLDERS ================== */
+.folders {
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.folder {
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.folder-btn {
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  background: #4169E1;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.folder-btn:hover {
+  background: #365ec7;
+}
+
+.folder-content {
+  display: none;
+  padding: 10px;
+}
+
+.folder-content li {
+  margin: 8px 0;
+  list-style: none;
+}
+
+/* ================== PROFILE & DROPDOWN ================== */
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+}
+
+.profile-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ccc;
+  background-size: cover;
+  background-position: center;
+}
+
+#profile-name {
+  font-weight: bold;
+  font-size: 15px;
+  color: #333;
+}
+
+.dropdown {
+  position: absolute;
+  top: 60px;
+  right: 15px;
+  background: white;
+  color: black;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  overflow: hidden;
+  display: none;
+  min-width: 180px;
+  z-index: 1000;
+}
+
+.dropdown a {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: black;
+}
+
+.dropdown a:hover {
+  background: #f0f0f0;
+}
+
+/* ================== FORMS ================== */
+#register-form,
+#login-form {
+  margin: 15px 0;
+  text-align: left;
+}
+
+#register-form input,
+#login-form input,
+#register-form select {
+  width: 90%;
+  padding: 10px;
+  margin: 6px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+#register-form button,
+#login-form button {
+  width: 95%;
+  padding: 10px;
+  margin-top: 10px;
+  background: #4169E1;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ================== ACCOUNT MODAL ================== */
+#materias-container p {
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+#turmas-container div {
+  margin-bottom: 6px;
+}
+
+#account-modal input[type="text"],
+#account-modal input[type="file"] {
+  display: block;
+  margin: 6px 0;
+  padding: 4px 6px;
+  width: 95%;
+}
+
+/* ================== ADMIN MODAL ================== */
+#upload-section {
+  margin-top: 15px;
+  display: none;
+}
+
+#upload-section button {
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+#upload-section button:hover {
+  background: #218838;
 }
