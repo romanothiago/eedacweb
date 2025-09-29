@@ -5,72 +5,164 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>EEDAC Web</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-  <img src="foguetin.png" alt="logo" class="topo">
-  <h1>EEDAC Web</h1>
-  <h2>Saiba das novidades da nossa escola!</h2>
+  <!-- Cabeçalho -->
+  <header style="text-align:center;">
+    <img src="foguetin.png" alt="logo" class="topo">
+    <h1>EEDAC Web</h1>
+    <h2>Saiba das novidades da nossa escola!</h2>
+  </header>
 
   <!-- Formulário de busca -->
-  <form id="search-form">
+  <section style="text-align:center; margin:20px 0;">
     <input type="text" id="search-input" placeholder="Buscar conteúdo..." autofocus>
-    <button id="search-button" type="submit">Buscar</button>
-  </form>
+    <ul id="search-results" style="list-style:none; padding:0; margin-top:10px; display:none;"></ul>
+  </section>
 
-  <div id="resources-container"></div>
-
-  <!-- Formulário de cadastro -->
-  <form id="register-form">
-    <input type="text" id="username" placeholder="Nome de usuário">
-    <input type="email" id="email" placeholder="E-mail">
-    <input type="password" id="password" placeholder="Senha">
-    <button id="register-button" type="button">Cadastrar</button>
-  </form>
-
-  <!-- Formulário de login -->
-  <form id="login-form">
-    <input type="text" id="username-login" placeholder="Nome de usuário">
-    <input type="password" id="password-login" placeholder="Senha">
-    <button id="login-button" type="button">Entrar</button>
-  </form>
-
-  <!-- Seção de vídeo aulas -->
-  <div id="video-lessons">
-    <h2>Vídeo Aulas</h2>
-    <ul id="video-list"></ul>
+  <!-- Botão abrir modal de login/cadastro -->
+  <div style="text-align:center; margin:20px 0;">
+    <button id="open-modal">Entrar / Cadastrar</button>
   </div>
 
-  <!-- Seção de conteúdo escrito -->
-  <div id="written-content">
-    <h2>Conteúdo Escrito</h2>
-    <ul id="content-list"></ul>
+  <!-- Modal Login/Cadastro -->
+  <div id="auth-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-modal" class="close">&times;</span>
+      <h2>Entrar / Cadastrar</h2>
+
+      <!-- Formulário de cadastro -->
+      <form id="register-form">
+        <input type="text" id="username" placeholder="Nome de usuário" required>
+        <input type="email" id="email" placeholder="E-mail" required>
+        <input type="password" id="password" placeholder="Senha" required>
+
+        <select id="user-type">
+          <option value="aluno">Aluno</option>
+          <option value="professor">Professor</option>
+        </select>
+
+        <div id="professor-tags-container" style="display:none; margin-top:10px;">
+          <input type="text" id="professor-tags" placeholder="Digite matérias separadas por vírgula">
+          <small>Ex: Matemática, Filosofia</small>
+        </div>
+
+        <div id="professor-turmas-container" style="display:none; margin-top:10px;">
+          <p>Selecione turmas que ensina:</p>
+          <div id="professor-turmas"></div>
+        </div>
+
+        <button id="register-button" type="button">Cadastrar</button>
+      </form>
+
+      <!-- Formulário de login -->
+      <form id="login-form">
+        <input type="text" id="username-login" placeholder="Nome de usuário" required>
+        <input type="password" id="password-login" placeholder="Senha" required>
+        <button id="login-button" type="button">Entrar</button>
+      </form>
+    </div>
   </div>
- 
- <!-- Seção de mostruário das imagens -->
- 
- <div> <class="controls">
-  <button onclick="mudarSlide(-1)">&#10094;</button>
-  <button onclick="mudarSlide(1)">&#10095;</button>
-</div>
-</div>
- 
- <div class="slide">
-  <a href="https://www.instagram.com/share/p/_wLfozNri" target="_blank">
-    <img src="foto1.png" alt="Imagem 1">
-  </a>
-</div>
 
-<div class="slide">
-  <a href="https://www.instagram.com/share/reel/_cNr3VYx7" target="_blank">
-    <img src="foto2.png" alt="Imagem 2">
-  </a>
-</div>
+  <!-- Perfil e dropdown -->
+  <div id="profile" class="profile" style="display:none;">
+    <div id="profile-photo" class="profile-photo"></div>
+    <span id="profile-name"></span>
+  </div>
 
-<div class="slide">
-  <a href="https://www.instagram.com/share/reel/BAVGJpaiMB" target="_blank">
-    <img src="foto3.png" alt="Imagem 3">
-  </a>
-</div>
+  <div id="dropdownMenu" class="dropdown" style="display:none;">
+    <a href="#" id="open-account">Minha Conta</a>
+    <a href="#" id="view-report" style="display:none;">Ver Boletim</a>
+    <a href="#" id="open-admin" style="display:none;">Configurações (Admin)</a>
+    <a href="#" id="logoutBtn">Sair</a>
+  </div>
+
+  <!-- Modal Minha Conta -->
+  <div id="account-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-account-modal" class="close">&times;</span>
+      <h2>Minha Conta</h2>
+
+      <!-- Upload de foto -->
+      <input type="file" id="photo-input" accept="image/*">
+
+      <!-- Nome e turma/matérias -->
+      <div id="materias-container" style="margin-top:10px;"></div>
+      <div id="turmas-container" style="margin-top:10px;"></div>
+
+      <button type="button" id="save-account">Salvar</button>
+    </div>
+  </div>
+
+  <!-- Modal Admin -->
+  <div id="admin-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-admin-modal" class="close">&times;</span>
+      <h2>Administração</h2>
+      <p>Digite a cereal-key para autenticar:</p>
+      <input type="password" id="admin-key" placeholder="Cereal-key">
+      <button id="verify-admin">Verificar</button>
+
+      <div id="upload-section" style="display:none; margin-top:15px;">
+        <p>Upload do boletim (base para professores)</p>
+        <textarea id="admin-boletins" placeholder="Formato: turma;aluno;disciplina;nota" style="width:100%; height:100px;"></textarea>
+        <button id="upload-boletins">Enviar boletins</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pastas de materiais -->
+  <section class="folders">
+    <h2>Materiais</h2>
+    <div class="folder">
+      <button class="folder-btn">Matemática</button>
+      <div class="folder-content" id="math-folder" style="display:none;"></div>
+    </div>
+    <div class="folder">
+      <button class="folder-btn">Filosofia</button>
+      <div class="folder-content" id="phil-folder" style="display:none;"></div>
+    </div>
+  </section>
+
+  <!-- Slideshow -->
+  <section class="slideshow-container">
+    <div class="slide" style="display:block;">
+      <a href="https://www.instagram.com/share/p/_wLfozNri" target="_blank">
+        <img src="foto1.png" alt="Imagem 1" style="width:100%;">
+      </a>
+    </div>
+    <div class="slide">
+      <a href="https://www.instagram.com/share/reel/_cNr3VYx7" target="_blank">
+        <img src="foto2.png" alt="Imagem 2" style="width:100%;">
+      </a>
+    </div>
+    <div class="slide">
+      <a href="https://www.instagram.com/share/reel/BAVGJpaiMB" target="_blank">
+        <img src="foto3.png" alt="Imagem 3" style="width:100%;">
+      </a>
+    </div>
+    <div class="controls">
+      <button onclick="mudarSlide(-1)">&#10094;</button>
+      <button onclick="mudarSlide(1)">&#10095;</button>
+    </div>
+  </section>
+
+  <!-- Redes sociais -->
+  <footer class="social-buttons" style="text-align:center; margin-top:30px;">
+    <a href="https://www.instagram.com/eedac__?igsh=MXZxaDZlbmkzdGYxOQ==" target="_blank" class="btn instagram">
+      <i class="fab fa-instagram"></i> Instagram
+    </a>
+    <a href="https://www.facebook.com/eed.augustocosta" target="_blank" class="btn facebook">
+      <i class="fab fa-facebook"></i> Facebook
+    </a>
+    <a href="https://youtube.com/@eedaclive?si=sJq2FKd9f0DVSUSm" target="_blank" class="btn youtube">
+      <i class="fab fa-youtube"></i> YouTube
+    </a>
+  </footer>
+  
+  <h5>Projeto feito pela oficina de programação da turma MANUINTMANA TEC</h5>
+
   <script src="script.js"></script>
 </body>
-</html>
+          </html>
