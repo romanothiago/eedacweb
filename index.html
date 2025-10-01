@@ -1,107 +1,468 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>EEDAC Web</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
-  <!-- Cabeçalho -->
-  <header style="text-align:center;">
-    <img src="foguetin.png" alt="logo" class="topo">
-    <h1>EEDAC Web</h1>
-    <h2>Saiba das novidades da nossa escola!</h2>
+  <!-- ================== TOPO ================== -->
+  <header class="top-bar">
+    <div class="top-bar-row main-row">
+      <div class="left-top">
+        <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menu">☰</button>
+        <button id="register-btn" class="register-btn">Entrar / Cadastrar</button>
+      </div>
+
+      <h1 class="site-name">EEDAC Web</h1>
+
+      <div id="profile" class="profile" style="display:none;">
+        <div id="profile-photo" class="profile-photo" title="Perfil"></div>
+      </div>
+    </div>
+
+    <div class="top-bar-row search-row">
+      <img src="foguetin.png" alt="Brasão" class="school-logo" />
+      <input type="text" id="search-input" placeholder="Buscar conteúdo..." />
+    </div>
+
+    <ul id="search-results" class="search-results" aria-live="polite"></ul>
   </header>
 
-  <!-- Formulário de busca -->
-  <section style="text-align:center; margin:20px 0;">
-    <input type="text" id="search-input" placeholder="Buscar conteúdo..." autofocus>
-    <ul id="search-results" style="list-style:none; padding:0; margin-top:10px; display:none;"></ul>
-  </section>
-
-  <!-- Botão abrir modal de login/cadastro -->
-  <div style="text-align:center; margin:20px 0;">
-    <button id="open-modal">Entrar / Cadastrar</button>
-  </div>
-
-  <!-- Modal Login/Cadastro -->
-  <div id="auth-modal" class="modal">
-    <div class="modal-content">
-      <span id="close-modal" class="close">&times;</span>
-      <h2>Entrar / Cadastrar</h2>
-
-      <!-- Formulário de cadastro -->
-      <form id="register-form">
-        <input type="text" id="username" placeholder="Nome de usuário" required>
-        <input type="email" id="email" placeholder="E-mail" required>
-        <input type="password" id="password" placeholder="Senha" required>
-
-        <select id="user-type">
-          <option value="aluno">Aluno</option>
-          <option value="professor">Professor</option>
-        </select>
-
-        <div id="professor-tags-container" style="display:none; margin-top:10px;">
-          <input type="text" id="professor-tags" placeholder="Digite matérias separadas por vírgula">
-          <small>Ex: Matemática, Filosofia</small>
+  <!-- ================== Menu Lateral (matérias) ================== -->
+  <nav id="side-menu" class="side-menu" aria-hidden="true">
+    <!-- MATÉRIAS: cada .subject tem .subject-toggle + .subject-content (anos) -->
+    <!-- Matemática -->
+    <div class="subject">
+      <button class="subject-toggle">Matemática</button>
+      <div class="subject-content">
+        <button class="year-toggle">1º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link" target="_blank" rel="noopener">PDF Aula 1</a>
+          <a href="#" class="material-link" target="_blank" rel="noopener">Vídeo Aula 1</a>
         </div>
-
-        <div id="professor-turmas-container" style="display:none; margin-top:10px;">
-          <p>Selecione turmas que ensina:</p>
-          <div id="professor-turmas"></div>
+        <button class="year-toggle">2º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link" target="_blank" rel="noopener">PDF Aula 1</a>
+          <a href="#" class="material-link" target="_blank" rel="noopener">Vídeo Aula 1</a>
         </div>
+        <button class="year-toggle">3º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link" target="_blank" rel="noopener">PDF Aula 1</a>
+          <a href="#" class="material-link" target="_blank" rel="noopener">Vídeo Aula 1</a>
+        </div>
+      </div>
+    </div>
 
-        <button id="register-button" type="button">Cadastrar</button>
-      </form>
+    <!-- Português -->
+    <div class="subject">
+      <button class="subject-toggle">Português</button>
+      <div class="subject-content">
+        <button class="year-toggle">1º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">2º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">3º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+      </div>
+    </div>
 
-      <!-- Formulário de login -->
-      <form id="login-form">
-        <input type="text" id="username-login" placeholder="Nome de usuário" required>
-        <input type="password" id="password-login" placeholder="Senha" required>
-        <button id="login-button" type="button">Entrar</button>
-      </form>
+    <!-- Física -->
+    <div class="subject">
+      <button class="subject-toggle">Física</button>
+      <div class="subject-content">
+        <button class="year-toggle">1º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">2º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">3º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Química -->
+    <div class="subject">
+      <button class="subject-toggle">Química</button>
+      <div class="subject-content">
+        <button class="year-toggle">1º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">2º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">3º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Biologia -->
+    <div class="subject">
+      <button class="subject-toggle">Biologia</button>
+      <div class="subject-content">
+        <button class="year-toggle">1º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">2º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">3º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- História -->
+    <div class="subject">
+      <button class="subject-toggle">História</button>
+      <div class="subject-content">
+        <button class="year-toggle">1º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">2º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">3º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Geografia -->
+    <div class="subject">
+      <button class="subject-toggle">Geografia</button>
+      <div class="subject-content">
+        <button class="year-toggle">1º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">2º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">3º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inglês -->
+    <div class="subject">
+      <button class="subject-toggle">Inglês</button>
+      <div class="subject-content">
+        <button class="year-toggle">1º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">2º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">3º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ARTES -->
+  <div class="subject">
+    <button class="subject-toggle"> Artes</button>
+    <div class="subject-content">
+      <button class="year-toggle"> 1º Ano</button>
+      <div class="year-content">
+        <a href="#" target="_blank">PDF Aula 1</a><br>
+        <a href="#" target="_blank">Vídeo Aula 1</a>
+      </div>
+      <button class="year-toggle"> 2º Ano</button>
+      <div class="year-content">
+        <a href="#" target="_blank">PDF Aula 1</a><br>
+        <a href="#" target="_blank">Vídeo Aula 1</a>
+      </div>
+      <button class="year-toggle"> 3º Ano</button>
+      <div class="year-content">
+        <a href="#" target="_blank">PDF Aula 1</a><br>
+        <a href="#" target="_blank">Vídeo Aula 1</a>
+      </div>
     </div>
   </div>
 
-  <!-- Perfil e dropdown -->
-  <div id="profile" class="profile" style="display:none;">
-    <div id="profile-photo" class="profile-photo"></div>
-    <span id="profile-name"></span>
+  <!-- EDUCAÇÃO FÍSICA -->
+  <div class="subject">
+    <button class="subject-toggle"> Educação Física</button>
+    <div class="subject-content">
+      <button class="year-toggle"> 1º Ano</button>
+      <div class="year-content">
+        <a href="#" target="_blank">PDF Aula 1</a><br>
+        <a href="#" target="_blank">Vídeo Aula 1</a>
+      </div>
+      <button class="year-toggle"> 2º Ano</button>
+      <div class="year-content">
+        <a href="#" target="_blank">PDF Aula 1</a><br>
+        <a href="#" target="_blank">Vídeo Aula 1</a>
+      </div>
+      <button class="year-toggle"> 3º Ano</button>
+      <div class="year-content">
+        <a href="#" target="_blank">PDF Aula 1</a><br>
+        <a href="#" target="_blank">Vídeo Aula 1</a>
+      </div>
+    </div>
   </div>
 
+  <!-- FILOSOFIA -->
+  <div class="subject">
+    <button class="subject-toggle">Filosofia</button>
+    <div class="subject-content">
+      <button class="year-toggle"> 1º Ano</button>
+      <div class="year-content">
+        <a href="#" target="_blank">PDF Aula 1</a><br>
+        <a href="#" target="_blank">Vídeo Aula 1</a>
+      </div>
+      <button class="year-toggle"> 2º Ano</button>
+      <div class="year-content">
+        <a href="#" target="_blank">PDF Aula 1</a><br>
+        <a href="#" target="_blank">Vídeo Aula 1</a>
+      </div>
+      <button class="year-toggle"> 3º Ano</button>
+      <div class="year-content">
+        <a href="#" target="_blank">PDF Aula 1</a><br>
+        <a href="#" target="_blank">Vídeo Aula 1</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOCIOLOGIA -->
+  <div class="subject">
+    <button class="subject-toggle"> Sociologia</button>
+    <div class="subject-content">
+      <button class="year-toggle"> 1º Ano</button>
+      <div class="year-content">
+        <a href="#" target="_blank">PDF Aula 1</a><br>
+        <a href="#" target="_blank">Vídeo Aula 1</a>
+      </div>
+      <button class="year-toggle"> 2º Ano</button>
+      <div class="year-content">
+        <a href="#" target="_blank">PDF Aula 1</a><br>
+        <a href="#" target="_blank">Vídeo Aula 1</a>
+      </div>
+      <button class="year-toggle"> 3º Ano</button>
+      <div class=""></div>
+      </div>
+
+    <!-- Projeto de Vida -->
+    <div class="subject">
+      <button class="subject-toggle">Projeto de Vida</button>
+      <div class="subject-content">
+        <button class="year-toggle">1º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">2º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">3º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link">PDF Aula 1</a>
+          <a href="#" class="material-link">Vídeo Aula 1</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ================== Vídeo de Boas-vindas (MAIOR) ================== -->
+  <main>
+    <section class="welcome-section">
+      <h2>Bem-vindo ao nosso site!</h2>
+      <video id="welcome-video" controls>
+        <source src="welcome.mp4" type="video/mp4" />
+        Seu navegador não suporta a tag de vídeo.
+      </video>
+    </section>
+
+
+<!-- Pastas principais -->
+<div class="main-folders">
+  <div class="main-folder">
+    <button class="main-folder-btn">
+      <span class="arrow">›</span>Quem somos?
+    </button>
+    <div class="main-folder-content">
+      <p>Nós somos a Escola Estadual Desembargador Augusto Costa, situada no município de Olivença, AL.</p>
+    </div>
+  </div>
+
+  <div class="main-folder">
+    <button class="main-folder-btn">
+      <span class="arrow">›</span> Nossos Intinerários
+    </button>
+    <div class="main-folder-content">
+      <p>Nossas materias adicionais com a implementação do novo ensino médio incluem: Projeto de Vida, Eletiva 1 e 2 (exceto para turmas técnicas)...
+      </p>
+    </div>
+  </div>
+
+  <div class="main-folder">
+    <button class="main-folder-btn">
+      <span class="arrow">›</span> Nossas Regras
+    </button>
+    <div class="main-folder-content">
+      <p>É proibido andar armado dentro da nossa escola, viu, Wenes?</p>
+    </div>
+  </div>
+</div>
+
+    <!-- ================== Slideshow (MENOR) ================== -->
+    <section class="slideshow-wrapper">
+      <div class="slideshow-container" id="slideshow">
+        <div class="slide" style="display:block;">
+          <a href="https://www.instagram.com/share/p/BABxBd5u3-" target="_blank" rel="noopener">
+            <img src="foto1.png" alt="Imagem 1" />
+          </a>
+        </div>
+        <div class="slide">
+          <a href="https://www.instagram.com/share/reel/_cNr3VYx7" target="_blank" rel="noopener">
+            <img src="foto2.png" alt="Imagem 2" />
+          </a>
+        </div>
+        <div class="slide">
+          <a href="https://www.instagram.com/share/reel/BAVGJpaiMB" target="_blank" rel="noopener">
+            <img src="foto3.png" alt="Imagem 3" />
+          </a>
+        </div>
+
+        <div class="controls">
+          <button id="prev-slide" class="slide-btn" aria-label="Slide anterior">&#10094;</button>
+          <button id="next-slide" class="slide-btn" aria-label="Próximo slide">&#10095;</button>
+        </div>
+      </div>
+    </section>
+
+  <!-- ================== Dropdown Perfil ================== -->
   <div id="dropdownMenu" class="dropdown" style="display:none;">
+    <div class="dropdown-header">
+      <strong id="profile-name">Usuário</strong>
+    </div>
     <a href="#" id="open-account">Minha Conta</a>
-    <a href="#" id="view-report" style="display:none;">Ver Boletim</a>
-    <a href="#" id="open-admin" style="display:none;">Configurações (Admin)</a>
+    <a href="#" id="view-report">Boletim</a>
+    <a href="#" id="open-admin">Administração</a>
     <a href="#" id="logoutBtn">Sair</a>
   </div>
 
-  <!-- Modal Minha Conta -->
-  <div id="account-modal" class="modal">
-    <div class="modal-content">
-      <span id="close-account-modal" class="close">&times;</span>
-      <h2>Minha Conta</h2>
+  <!-- ================== Modais ================== -->
+  <!-- Auth (login/register) -->
+  <div id="auth-modal" class="modal" aria-hidden="true">
+    <div class="modal-content auth-content">
+      <span id="close-auth-modal" class="close">&times;</span>
 
-      <!-- Upload de foto -->
-      <input type="file" id="photo-input" accept="image/*">
+      <div id="login-panel" class="auth-panel">
+        <h2>Entrar</h2>
+        <form id="login-form">
+          <input type="text" id="username-login" placeholder="Usuário" required />
+          <input type="password" id="password-login" placeholder="Senha" required />
+          <button id="login-button" type="submit">Entrar</button>
+        </form>
+        <p>Não tem conta? <a href="#" id="show-register">Cadastre-se</a></p>
+      </div>
 
-      <!-- Nome e turma/matérias -->
-      <div id="materias-container" style="margin-top:10px;"></div>
-      <div id="turmas-container" style="margin-top:10px;"></div>
+      <div id="register-panel" class="auth-panel" style="display:none;">
+        <h2>Cadastrar</h2>
+        <form id="register-form">
+          <input type="text" id="username-register" placeholder="Nome de usuário" required />
+          <input type="email" id="email-register" placeholder="E-mail" required />
+          <input type="password" id="password-register" placeholder="Senha" required />
 
-      <button type="button" id="save-account">Salvar</button>
+          <label for="user-type">Tipo de usuário:</label>
+          <select id="user-type" name="user-type">
+            <option value="aluno" selected>Aluno</option>
+            <option value="professor">Professor</option>
+          </select>
+
+          <div id="professor-tags-container" style="display:none;">
+            <label for="professor-tags">Matérias (se for professor, separadas por vírgula):</label>
+            <input id="professor-tags" placeholder="Ex.: Matemática, Física" />
+          </div>
+
+          <div id="professor-turmas-container" style="display:none;">
+            <label>Turmas (se for professor):</label>
+            <div id="professor-turmas" class="professor-turmas"></div>
+          </div>
+
+          <label for="profilePicUpload">Foto de perfil (opcional):</label>
+          <input type="file" id="profilePicUpload" accept="image/*" />
+
+          <button id="register-button" type="submit">Cadastrar</button>
+        </form>
+        <p>Já tem conta? <a href="#" id="show-login">Entrar</a></p>
+      </div>
     </div>
   </div>
 
-  <!-- Modal Admin -->
-  <div id="admin-modal" class="modal">
+  <!-- Minha Conta -->
+  <div id="account-modal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <span id="close-account-modal" class="close">&times;</span>
+      <h2>Minha Conta</h2>
+      <div id="materias-container" style="margin-top:10px;"></div>
+      <div id="turmas-container" style="margin-top:10px;"></div>
+      <button id="save-account-button">Salvar</button>
+    </div>
+  </div>
+
+  <!-- Admin -->
+  <div id="admin-modal" class="modal" aria-hidden="true">
     <div class="modal-content">
       <span id="close-admin-modal" class="close">&times;</span>
       <h2>Administração</h2>
       <p>Digite a cereal-key para autenticar:</p>
-      <input type="password" id="admin-key" placeholder="Cereal-key">
+      <input type="password" id="admin-key" placeholder="Cereal-key" />
       <button id="verify-admin">Verificar</button>
 
       <div id="upload-section" style="display:none; margin-top:15px;">
@@ -112,56 +473,17 @@
     </div>
   </div>
 
-  <!-- Pastas de materiais -->
-  <section class="folders">
-    <h2>Materiais</h2>
-    <div class="folder">
-      <button class="folder-btn">Matemática</button>
-      <div class="folder-content" id="math-folder" style="display:none;"></div>
-    </div>
-    <div class="folder">
-      <button class="folder-btn">Filosofia</button>
-      <div class="folder-content" id="phil-folder" style="display:none;"></div>
-    </div>
-  </section>
-
-  <!-- Slideshow -->
-  <section class="slideshow-container">
-    <div class="slide" style="display:block;">
-      <a href="https://www.instagram.com/share/p/_wLfozNri" target="_blank">
-        <img src="foto1.png" alt="Imagem 1" style="width:100%;">
-      </a>
-    </div>
-    <div class="slide">
-      <a href="https://www.instagram.com/share/reel/_cNr3VYx7" target="_blank">
-        <img src="foto2.png" alt="Imagem 2" style="width:100%;">
-      </a>
-    </div>
-    <div class="slide">
-      <a href="https://www.instagram.com/share/reel/BAVGJpaiMB" target="_blank">
-        <img src="foto3.png" alt="Imagem 3" style="width:100%;">
-      </a>
-    </div>
-    <div class="controls">
-      <button onclick="mudarSlide(-1)">&#10094;</button>
-      <button onclick="mudarSlide(1)">&#10095;</button>
-    </div>
-  </section>
-
-  <!-- Redes sociais -->
-  <footer class="social-buttons" style="text-align:center; margin-top:30px;">
-    <a href="https://www.instagram.com/eedac__?igsh=MXZxaDZlbmkzdGYxOQ==" target="_blank" class="btn instagram">
+  <!-- ================== Rodapé ================== -->
+  <footer class="social-buttons">
+    <a href="https://www.instagram.com/eedac__?igsh=MXZxaDZlbmkzdGYxOQ==" target="_blank" rel="noopener" class="btn instagram">
       <i class="fab fa-instagram"></i> Instagram
     </a>
-    <a href="https://www.facebook.com/eed.augustocosta" target="_blank" class="btn facebook">
-      <i class="fab fa-facebook"></i> Facebook
-    </a>
-    <a href="https://youtube.com/@eedaclive?si=sJq2FKd9f0DVSUSm" target="_blank" class="btn youtube">
+    <a href="https://youtube.com/@eedaclive?si=sJq2FKd9f0DVSUSm" target="_blank" rel="noopener" class="btn youtube">
       <i class="fab fa-youtube"></i> YouTube
     </a>
+
+    <h5>Projeto feito pela oficina de programação da turma MANUINTMANA TEC</h5>
   </footer>
-  
-  <h5>Projeto feito pela oficina de programação da turma MANUINTMANA TEC</h5>
 
   <script src="script.js"></script>
 </body>
