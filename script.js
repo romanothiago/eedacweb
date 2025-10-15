@@ -341,42 +341,233 @@ document.addEventListener("DOMContentLoaded", () => {
   if($("save-account-button")) $("save-account-button").addEventListener("click", saveAccountChanges);
   window.addEventListener("click", (e)=> { if(e.target === accountModal) accountModal.style.display = "none"; });
 
-  // ================== BOLETIM ==================
-  function openBoletim(){
-    const username = getLoggedInUsername();
-    if(!username) return;
-    const users = loadUsers();
-    const current = users.find(u=>u.username===username);
-    if(!current) return;
-    let html = "<h3>Boletim</h3><ul>";
-    if(current.userType === "aluno"){
-      const turma = (current.turmas && current.turmas[0]) || null;
-      users.forEach(u=>{
-        if(u.userType==="aluno" && u.turmas && turma && u.turmas.includes(turma)){
-          for(const [disc,nota] of Object.entries(u.boletins||{})){
-            html += `<li>${u.username} - ${disc}: ${nota}</li>`;
-          }
-        }
-      });
-    } else if(current.userType==="professor"){
-      const materias = current.tags || [];
-      users.forEach(u=>{
-        if(u.userType==="aluno"){
-          for(const [disc,nota] of Object.entries(u.boletins||{})){
-            if(materias.includes(disc)) html += `<li>${u.username} - ${disc}: ${nota}</li>`;
-          }
+// ================== BOLETIM (modal com top azul + tabela abaixo; edição só para professores) ==================
+function loadBoletinsLS(){
+  return JSON.parse(localStorage.getItem("boletins_v1") || "{}");
+}
+function saveBoletinsLS(data){
+  localStorage.setItem("boletins_v1", JSON.stringify(data));
+}
+function loadStudentNames(){
+  return JSON.parse(localStorage.getItem("studentNames_v1") || "[]");
+}
+function saveStudentNames(list){
+  localStorage.setItem("studentNames_v1", JSON.stringify(Array.from(new Set(list))));
+}
+function getAllStudentNames(){ return loadStudentNames(); }
+
+function openBoletim(){
+  // remove modal anterior, se existir
+  const existing = document.getElementById("boletim-modal");
+  if(existing) existing.remove();
+
+  // determina se usuário é professor/admin (se não logado => considera aluno)
+  const logged = getLoggedInUsername();
+  const users = loadUsers();
+  const currentUser = users.find(u => u.username === logged);
+  const isProfessor = !!(currentUser && (currentUser.userType === "professor" || currentUser.admin));
+
+  // cria modal
+  const modal = document.createElement("div");
+  modal.id = "boletim-modal";
+  modal.className = "modal";
+  modal.style.display = "block";
+
+  modal.innerHTML = `
+    <div class="modal-content" style="max-width:920px; width:95%; padding:0; border-radius:8px; overflow:hidden;">
+      <!-- Top azul -->
+      <div style="background:var(--blue); color:#fff; padding:12px 16px; display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+        <div style="flex:1; min-width:220px;">
+          <strong>Boletim</strong>
+          <div style="font-size:12px; opacity:0.9;">${isProfessor ? "Modo: Professor — editar permitido" : "Modo: Aluno — somente leitura"}</div>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center; flex:2; min-width:320px;">
+          <select id="boletim-turma" style="flex:1; padding:8px; border-radius:6px; border:none;">
+            <option value="">Turma</option>
+            ${TURMAS.map(t => `<option value="${t}">${t}</option>`).join("")}
+          </select>
+          <select id="boletim-materia" style="flex:1; padding:8px; border-radius:6px; border:none;">
+            <option value="">Matéria</option>
+            ${VALID_TAGS.map(m => `<option value="${m}">${m}</option>`).join("")}
+          </select>
+          <select id="boletim-bimestre" style="width:150px; padding:8px; border-radius:6px; border:none;">
+            <option value="">Bimestre</option>
+            <option value="1º Bimestre">1º Bimestre</option>
+            <option value="2º Bimestre">2º Bimestre</option>
+            <option value="3º Bimestre">3º Bimestre</option>
+            <option value="4º Bimestre">4º Bimestre</option>
+          </select>
+        </div>
+
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button id="btn-load" style="padding:8px 10px; border-radius:6px; border:none; background:#fff; color:var(--blue); cursor:pointer;">Carregar</button>
+          <button id="btn-new" style="padding:8px 10px; border-radius:6px; border:1px solid rgba(255,255,255,0.2); background:transparent; color:#fff; cursor:pointer;">Novo</button>
+          <button id="close-boletim" class="close" title="Fechar" style="font-size:20px; color:#fff; margin-left:6px; background:transparent; border:none;">✕</button>
+        </div>
+      </div>
+
+      <!-- Corpo: tabela de alunos -->
+      <div style="background:var(--card); padding:14px; max-height:64vh; overflow:auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <h3 style="margin:0">Notas</h3>
+          <div>
+            <button id="add-row" style="margin-right:8px; padding:8px 10px; border-radius:6px; border:none; background:#e9eefc; color:var(--blue); cursor:pointer;">+ Adicionar aluno</button>
+            <button id="save-boletim" style="padding:8px 12px; border-radius:6px; border:none; background:var(--brand); color:#fff; cursor:pointer;">Salvar</button>
+          </div>
+        </div>
+
+        <datalist id="student-names"></datalist>
+
+        <table id="boletim-table" style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr style="background:#f7f8fb;">
+              <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Aluno</th>
+              <th style="width:140px; text-align:left; padding:8px; border-bottom:1px solid #eee;">Nota</th>
+              <th style="width:80px; padding:8px; border-bottom:1px solid #eee;"></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // refs
+  const closeBtn = modal.querySelector("#close-boletim");
+  const turmaSel = modal.querySelector("#boletim-turma");
+  const materiaSel = modal.querySelector("#boletim-materia");
+  const bimestreSel = modal.querySelector("#boletim-bimestre");
+  const loadBtn = modal.querySelector("#btn-load");
+  const newBtn = modal.querySelector("#btn-new");
+  const addRowBtn = modal.querySelector("#add-row");
+  const saveBtn = modal.querySelector("#save-boletim");
+  const tableBody = modal.querySelector("#boletim-table tbody");
+  const datalist = modal.querySelector("#student-names");
+
+  // estado inicial de botões conforme permissão
+  if(!isProfessor){
+    addRowBtn.disabled = true;
+    addRowBtn.style.opacity = "0.6";
+    saveBtn.disabled = true;
+    saveBtn.style.opacity = "0.6";
+    saveBtn.title = "Somente professores podem salvar";
+  }
+
+  // popula datalist com nomes já existentes
+  function refreshDatalist(){
+    const names = getAllStudentNames();
+    datalist.innerHTML = names.map(n => `<option value="${n}">`).join("");
+  }
+  refreshDatalist();
+
+  // cria linha (editable = isProfessor)
+  function createRow(name = "", nota = "", editable = isProfessor){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td style="padding:8px; border-bottom:1px solid #f0f0f0;">
+        <input list="student-names" class="input-aluno" style="width:100%; padding:6px; border-radius:6px; border:1px solid #ddd;" value="${name || ""}" ${editable ? "" : "readonly"} />
+      </td>
+      <td style="padding:8px; border-bottom:1px solid #f0f0f0;">
+        <input type="number" min="0" max="10" step="0.1" class="input-nota" style="width:100%; padding:6px; border-radius:6px; border:1px solid #ddd;" value="${nota !== null ? nota : ""}" ${editable ? "" : "readonly"} />
+      </td>
+      <td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:center;">
+        <button class="remove-row" style="background:transparent;border:none;color:#c00;cursor:pointer;" ${editable ? "" : "disabled"}>${editable ? "✕" : ""}</button>
+      </td>
+    `;
+    const removeBtn = tr.querySelector(".remove-row");
+    if(removeBtn){
+      removeBtn.addEventListener("click", ()=> tr.remove());
+    }
+    // quando professor digita nome, atualiza lista local para sugerir depois
+    if(editable){
+      const nameInput = tr.querySelector(".input-aluno");
+      nameInput.addEventListener("change", (e)=>{
+        const val = (e.target.value || "").trim();
+        if(val){
+          const names = loadStudentNames();
+          names.push(val);
+          saveStudentNames(names);
+          refreshDatalist();
         }
       });
     }
-    html += "</ul>";
-    const reportModal = document.createElement("div"); reportModal.className="modal"; reportModal.style.display="block";
-    reportModal.innerHTML = `<div class="modal-content"><span class="close">&times;</span>${html}</div>`;
-    document.body.appendChild(reportModal);
-    reportModal.querySelector(".close").onclick = ()=> reportModal.remove();
-    reportModal.addEventListener("click", e => { if(e.target === reportModal) reportModal.remove(); });
+    tableBody.appendChild(tr);
+    return tr;
   }
-  const viewReport = $("view-report");
-  if(viewReport) viewReport.addEventListener("click", (e)=>{ e.preventDefault(); openBoletim(); if(dropdown) dropdown.style.display='none'; });
+
+  // carrega tabela de storage
+  function loadTableFromStorage(){
+    tableBody.innerHTML = "";
+    const turma = turmaSel.value, materia = materiaSel.value, bimestre = bimestreSel.value;
+    if(!turma || !materia || !bimestre){
+      // tabela vazia (visível apenas para consulta)
+      createRow("", "", false); // apenas uma linha vazia visual
+      return;
+    }
+    const data = loadBoletinsLS();
+    if(data[turma] && data[turma][materia] && data[turma][materia][bimestre]){
+      const entries = data[turma][materia][bimestre];
+      Object.keys(entries).forEach(nome => {
+        createRow(nome, entries[nome], isProfessor);
+      });
+    } else {
+      // sem dados: uma linha vazia (se professor, editável)
+      createRow("", "", isProfessor);
+    }
+  }
+
+  // salvar tabela no storage (somente professor)
+  function saveTableToStorage(){
+    if(!isProfessor){ alert("Você não tem permissão para salvar boletins."); return; }
+    const turma = turmaSel.value, materia = materiaSel.value, bimestre = bimestreSel.value;
+    if(!turma || !materia || !bimestre){ alert("Selecione turma, matéria e bimestre antes de salvar."); return; }
+    const rows = Array.from(tableBody.querySelectorAll("tr"));
+    const data = loadBoletinsLS();
+    if(!data[turma]) data[turma] = {};
+    if(!data[turma][materia]) data[turma][materia] = {};
+    if(!data[turma][materia][bimestre]) data[turma][materia][bimestre] = {};
+
+    const namesForStorage = loadStudentNames();
+    const target = {};
+    rows.forEach(r=>{
+      const name = (r.querySelector(".input-aluno").value || "").trim();
+      const notaRaw = r.querySelector(".input-nota").value;
+      if(!name) return; // ignora
+      const nota = notaRaw === "" ? "" : Number(notaRaw);
+      if(nota !== "" && (isNaN(nota) || nota < 0 || nota > 10)){ /* ignora valores inválidos */ return; }
+      target[name] = nota;
+      namesForStorage.push(name);
+    });
+
+    data[turma][materia][bimestre] = target;
+    saveBoletinsLS(data);
+    saveStudentNames(namesForStorage);
+    refreshDatalist();
+    alert("Boletim salvo localmente!");
+  }
+
+  // eventos
+  closeBtn.addEventListener("click", ()=> modal.remove());
+  modal.addEventListener("click", (e) => { if(e.target === modal) modal.remove(); });
+
+  loadBtn.addEventListener("click", loadTableFromStorage);
+  newBtn.addEventListener("click", ()=> { tableBody.innerHTML = ""; createRow("", "", isProfessor); });
+  addRowBtn.addEventListener("click", ()=> createRow("", "", isProfessor));
+  saveBtn.addEventListener("click", saveTableToStorage);
+
+  // desabilita edição/remoção caso não seja professor (caso haja linhas já criadas)
+  // (a função createRow já aplica readonly/disabled conforme isProfessor)
+  // carregamento inicial
+  createRow("", "", isProfessor);
+  refreshDatalist();
+}
+
+// substitui evento antigo (se existir)
+const viewReport = $("view-report");
+if(viewReport) viewReport.addEventListener("click", (e)=>{ e.preventDefault(); openBoletim(); if(dropdown) dropdown.style.display = 'none'; });
+
 
   // ================== ADMIN ==================
   function openAdminModal(){ const m = $("admin-modal"); if(m) m.style.display = "block"; }
@@ -405,6 +596,77 @@ document.addEventListener("DOMContentLoaded", () => {
   if(verifyBtn) verifyBtn.addEventListener("click", verifyAdminKey);
   if(uploadBtn) uploadBtn.addEventListener("click", uploadBoletinsAdmin);
   window.addEventListener("click", (e)=> { if(e.target === $("admin-modal")) $("admin-modal").style.display = 'none'; });
+
+// ================== UPLOAD FORM (dentro da modal de perfil) ==================
+  function renderUploadForm(){
+    const username = getLoggedInUsername();
+    const users = loadUsers();
+    const user = users.find(u => u.username === username);
+
+    // Só mostra para professores ou admins
+    if (!user || (user.userType !== "professor" && !user.admin)) return;
+
+    const accountModal = $("account-modal");
+    if (!accountModal) return;
+
+    // Evita duplicação se o formulário já existir
+    if (accountModal.querySelector("#upload-form")) return;
+
+    const uploadSection = document.createElement("section");
+    uploadSection.innerHTML = `
+      <hr style="margin:16px 0; border:none; border-top:1px solid #ccc;">
+      <h3 style="margin-bottom:8px;">Envio de Materiais</h3>
+      <form id="upload-form" style="display:flex; flex-direction:column; gap:8px;">
+        <label for="upload-subject">Matéria:</label>
+        <select id="upload-subject" required>
+          <option value="">Selecione...</option>
+          ${VALID_TAGS.map(m => `<option>${m}</option>`).join("")}
+        </select>
+
+        <label for="upload-year">Ano:</label>
+        <select id="upload-year" required>
+          <option value="">Selecione...</option>
+          <option>1º Ano</option>
+          <option>2º Ano</option>
+          <option>3º Ano</option>
+        </select>
+
+        <label for="pdf-upload">Arquivo PDF:</label>
+        <input type="file" id="pdf-upload" accept="application/pdf" />
+
+        <label for="video-upload">Vídeo Aula (MP4):</label>
+        <input type="file" id="video-upload" accept="video/mp4" />
+
+        <button type="submit" style="margin-top:8px;">Enviar</button>
+      </form>
+    `;
+    accountModal.querySelector(".modal-content").appendChild(uploadSection);
+
+    // Lógica simples de envio
+    const uploadForm = $("upload-form");
+    uploadForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const subject = $("upload-subject").value;
+      const year = $("upload-year").value;
+      const pdf = $("pdf-upload").files[0];
+      const video = $("video-upload").files[0];
+      if (!subject || !year) return alert("Preencha todos os campos.");
+
+      let msg = `Arquivo(s) enviados:\nMatéria: ${subject}\nAno: ${year}\n`;
+      if (pdf) msg += `- PDF: ${pdf.name}\n`;
+      if (video) msg += `- Vídeo: ${video.name}\n`;
+      alert(msg);
+      uploadForm.reset();
+    });
+  }
+
+  // adiciona o formulário quando abrir o modal de conta
+  const openAccountBtn = $("open-account");
+  if (openAccountBtn) {
+    openAccountBtn.addEventListener("click", () => {
+      setTimeout(renderUploadForm, 300); // pequeno delay para o modal renderizar antes
+    });
+  }
 
   // ================== INIT UI ==================
   const logged = getLoggedInUsername(); if(logged) setLoggedInUserUI(logged);
