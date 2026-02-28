@@ -1,0 +1,37 @@
+const uploadForm = document.getElementById("upload-form");
+const pdfInput = document.getElementById("pdf-upload");
+const videoInput = document.getElementById("video-upload");
+const viewer = document.getElementById("materiais-viewer");
+
+uploadForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    viewer.innerHTML = "";
+
+    const pdfFile = pdfInput.files[0];
+    const videoFile = videoInput.files[0];
+
+    // Se tiver PDF
+    if (pdfFile) {
+        const pdfURL = URL.createObjectURL(pdfFile);
+        viewer.innerHTML += `
+            <h3>PDF:</h3>
+            <iframe src="${pdfURL}"></iframe>
+        `;
+    }
+
+    // Se tiver vídeo
+    if (videoFile) {
+        const videoURL = URL.createObjectURL(videoFile);
+        viewer.innerHTML += `
+            <h3>Vídeo:</h3>
+            <video controls>
+                <source src="${videoURL}" type="video/mp4">
+            </video>
+        `;
+    }
+
+    if (!pdfFile && !videoFile) {
+        viewer.innerHTML = "<p>Nenhum arquivo enviado.</p>";
+    }
+});
