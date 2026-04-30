@@ -9,7 +9,6 @@ const GENERAL_RESOURCES = [
   { title: "teste", type: "vídeo", url: "https://youtu.be/dQw4w9WgXcQ" },
   { title: "Alagoas", type: "site", url: "https://example.com" }
 ];
-const ADMIN_KEYS = ["4444"];
 const SUBJECT_RESOURCES = {}; // (mantido vazio aqui; você já tem conteúdo hardcoded no menu lateral)
 
 // storage helpers
@@ -121,6 +120,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // fechar resultados clicando fora
+  
+  const teacherAreaBtn = $("open-teacher-area");
+const perfilModal = $("perfil-modal"); // Modal que já contém o formulário de upload
+
+if (teacherAreaBtn) {
+    teacherAreaBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (perfilModal) {
+            perfilModal.style.display = "flex"; // Abre a modal de upload que você já tem
+        }
+        if ($("dropdownMenu")) $("dropdownMenu").style.display = "none";
+    });
+}
+
+  
   document.addEventListener("click", (e)=>{
     const sr = $("search-results");
     const si = $("search-input");
@@ -260,6 +274,37 @@ document.addEventListener("DOMContentLoaded", () => {
     if(openAdminLink) openAdminLink.style.display = (user.userType === "professor" || user.admin) ? "block" : "none";
   }
 
+function updateProfileUI(){
+    const username = getLoggedInUsername();
+    const profileName = $("profile-name");
+    const profilePhoto = $("profile-photo");
+    const teacherAreaLink = $("open-teacher-area"); // Referência ao novo link
+
+    if(!username){
+        if(profileName) profileName.textContent = "Usuário";
+        if(profilePhoto) profilePhoto.style.backgroundImage = "";
+        if(teacherAreaLink) teacherAreaLink.style.display = "none";
+        return;
+    }
+
+    const users = loadUsers();
+    const user = users.find(u=>u.username===username);
+    if(!user) return;
+
+    if(profileName) profileName.textContent = user.username;
+    if(profilePhoto) profilePhoto.style.backgroundImage = user.photo ? `url(${user.photo})` : "";
+
+    // LÓGICA DE PERMISSÃO:
+    if(teacherAreaLink) {
+        if(user.userType === "professor" || user.userType === "administrador" || user.admin) {
+            teacherAreaLink.style.display = "block";
+        } else {
+            teacherAreaLink.style.display = "none";
+        }
+    }
+}
+
+
   // profile dropdown toggle
   const profileBtn = $("profile");
   const dropdown = $("dropdownMenu");
@@ -341,7 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if($("save-account-button")) $("save-account-button").addEventListener("click", saveAccountChanges);
   window.addEventListener("click", (e)=> { if(e.target === accountModal) accountModal.style.display = "none"; });
 
-// ================== BOLETIM (modal com top azul + tabela abaixo; edição só para professores) ==================
+// ================ BOLETIM ===============
 function loadBoletinsLS(){
   return JSON.parse(localStorage.getItem("boletins_v1") || "{}");
 }
@@ -598,91 +643,147 @@ if(viewReport) viewReport.addEventListener("click", (e)=>{ e.preventDefault(); o
   window.addEventListener("click", (e)=> { if(e.target === $("admin-modal")) $("admin-modal").style.display = 'none'; });
 
 // ================== UPLOAD FORM (dentro da modal de perfil) ==================
-  function renderUploadForm(){
-    const username = getLoggedInUsername();
+  // No seu script.js, substitua a parte do perfilModal por esta:
+const uploadLessonBtn = document.getElementById("uploadLessonBtn");
+
+if (uploadLessonBtn) {
+  uploadLessonBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    
+    const logged = getLoggedInUsername();
     const users = loadUsers();
-    const user = users.find(u => u.username === username);
+    const currentUser = users.find(u => u.username === logged);
 
-    // Só mostra para professores ou admins
-    if (!user || (user.userType !== "professor" && !user.admin)) return;
-
-    const accountModal = $("account-modal");
-    if (!accountModal) return;
-
-    // Evita duplicação se o formulário já existir
-    if (accountModal.querySelector("#upload-form")) return;
-
-    const uploadSection = document.createElement("section");
-    uploadSection.innerHTML = `
-      <hr style="margin:16px 0; border:none; border-top:1px solid #ccc;">
-      <h3 style="margin-bottom:8px;">Envio de Materiais</h3>
-      <form id="upload-form" style="display:flex; flex-direction:column; gap:8px;">
-        <label for="upload-subject">Matéria:</label>
-        <select id="upload-subject" required>
-          <option value="">Selecione...</option>
-          ${VALID_TAGS.map(m => `<option>${m}</option>`).join("")}
-        </select>
-
-        <label for="upload-year">Ano:</label>
-        <select id="upload-year" required>
-          <option value="">Selecione...</option>
-          <option>1º Ano</option>
-          <option>2º Ano</option>
-          <option>3º Ano</option>
-        </select>
-
-        <label for="pdf-upload">Arquivo PDF:</label>
-        <input type="file" id="pdf-upload" accept="application/pdf" />
-
-        <label for="video-upload">Vídeo Aula (MP4):</label>
-        <input type="file" id="video-upload" accept="video/mp4" />
-
-        <button type="submit" style="margin-top:8px;">Enviar</button>
-      </form>
-    `;
-    accountModal.querySelector(".modal-content").appendChild(uploadSection);
-
-    // Lógica simples de envio
-    const uploadForm = $("upload-form");
-    uploadForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const subject = $("upload-subject").value;
-      const year = $("upload-year").value;
-      const pdf = $("pdf-upload").files[0];
-      const video = $("video-upload").files[0];
-      if (!subject || !year) return alert("Preencha todos os campos.");
-
-      let msg = `Arquivo(s) enviados:\nMatéria: ${subject}\nAno: ${year}\n`;
-      if (pdf) msg += `- PDF: ${pdf.name}\n`;
-      if (video) msg += `- Vídeo: ${video.name}\n`;
-      alert(msg);
-      uploadForm.reset();
-    });
-  }
-
-  // adiciona o formulário quando abrir o modal de conta
-  const openAccountBtn = $("open-account");
-  if (openAccountBtn) {
-    openAccountBtn.addEventListener("click", () => {
-      setTimeout(renderUploadForm, 300); // pequeno delay para o modal renderizar antes
-    });
-  }
+    if (currentUser && (currentUser.userType === "professor" || currentUser.admin)) {
+      // Se for professor, abre a modal de envio
+      document.getElementById("perfil-modal").style.display = "flex";
+    } else {
+      // Se for aluno, abre o menu lateral para ele escolher a matéria
+      const sideMenu = document.getElementById("side-menu");
+      sideMenu.classList.add("open");
+      alert("Selecione a matéria no menu lateral para ver as aulas disponíveis.");
+    }
+  });
+}
 
   // ================== INIT UI ==================
   const logged = getLoggedInUsername(); if(logged) setLoggedInUserUI(logged);
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('upload-form');
 
-const mainFolderButtons = document.querySelectorAll('.main-folder-btn');
 
-mainFolderButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    btn.classList.toggle('active');
-    const content = btn.nextElementSibling;
-    if (content.style.display === "block") {
-      content.style.display = "none";
+// 1. Localizar os elementos
+const teacherAreaBtn = document.getElementById("open-teacher-area");
+const modalProfessor = document.getElementById("perfil-modal");
+const closeProfessor = document.getElementById("close-perfil");
+
+// 2. Abrir a modal ao clicar em "Área dos Professores"
+if (teacherAreaBtn) {
+  teacherAreaBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    modalProfessor.style.display = "flex";
+    document.getElementById("dropdownMenu").style.display = "none"; // Fecha o menu
+  });
+}
+
+// 3. Fechar a modal
+if (closeProfessor) {
+  closeProfessor.onclick = () => modalProfessor.style.display = "none";
+}
+
+// Fechar se clicar fora da modal
+window.addEventListener("click", (e) => {
+  if (e.target === modalProfessor) modalProfessor.style.display = "none";
+});
+
+
+    // 1. FUNÇÃO PARA SALVAR
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); // Impede a página de recarregar
+
+        const url = document.getElementById('linkAula1').value;
+        const materia = document.getElementById('upload-subject').value;
+        const ano = document.getElementById('upload-year').value;
+
+        if (!url || !materia || !ano) {
+            alert("Preencha todos os campos!");
+            return;
+        }
+
+        // Salva no navegador
+        const chave = `aula_${materia}_${ano}`;
+        localStorage.setItem(chave, url);
+
+        // Aplica na tela
+        vincularLink(materia, ano, url);
+        alert(`Link de ${materia} (${ano}) salvo!`);
+    });
+
+    // 2. FUNÇÃO QUE ENCONTRA O BOTÃO CERTO
+    function vincularLink(materia, ano, url) {
+        // Seleciona todos os blocos de matéria
+        const blocosMateria = document.querySelectorAll('.subject');
+
+        blocosMateria.forEach(bloco => {
+            const tituloMateria = bloco.querySelector('.subject-toggle').innerText.trim();
+
+            // Se o título do bloco for igual à matéria selecionada
+            if (tituloMateria === materia) {
+                const botoesAno = bloco.querySelectorAll('.year-toggle');
+
+                botoesAno.forEach(btnAno => {
+                    // Se o texto do botão for igual ao ano selecionado
+                    if (btnAno.innerText.trim() === ano) {
+                        // Pega a div de conteúdo que vem logo depois do botão do ano
+                        const content = btnAno.nextElementSibling;
+                        const linkFinal = content.querySelector('.material-link');
+
+                        if (linkFinal) {
+                            linkFinal.href = url;
+                            linkFinal.classList.add('link-ativo'); // Opcional: para você estilizar no CSS
+                            console.log(`Sucesso: Link inserido em ${materia} - ${ano}`);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    // 3. CARREGAR AO ABRIR A PÁGINA
+    function carregarLinks() {
+        const materias = ["Matemática", "Português", "Física", "Química", "Biologia", "História", "Geografia", "Inglês", "Artes", "Educação Física", "Filosofia", "Sociologia", "Projeto de Vida"];
+        const anos = ["1º Ano", "2º Ano", "3º Ano"];
+
+        materias.forEach(m => {
+            anos.forEach(a => {
+                const linkSalvo = localStorage.getItem(`aula_${m}_${a}`);
+                if (linkSalvo) {
+                    vincularLink(m, a, linkSalvo);
+                }
+            });
+        });
+    }
+
+    carregarLinks();
+});
+
+
+// ================== LÓGICA DAS PASTAS PRINCIPAIS ==================
+document.querySelectorAll('.main-folder-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    const parent = button.parentElement;
+    const content = button.nextElementSibling;
+    
+    // Alterna a classe no botão (para girar a seta no CSS)
+    button.classList.toggle('active');
+    
+    // Mostra ou esconde o conteúdo
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
     } else {
-      content.style.display = "block";
+      content.style.display = 'block';
     }
   });
 });
