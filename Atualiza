@@ -1,0 +1,23 @@
+<script>
+
+function abrirModal() {
+
+document.getElementById("minhaModal").styl e.display = "block";
+
+}
+
+function fecharModal() {
+
+document.getElementById("minhaModal").styl e.display = "none";
+
+}
+
+// Fecha clicando fora da caixa window.onclick = function(event) { const modal = document.getElementById("minhaModal");
+
+if (event.target == modal) { modal.style.display = "none";
+
+</script>
+
+</body>
+
+</html>
