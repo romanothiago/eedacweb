@@ -641,11 +641,75 @@ window.onload = carregarLinks;
     <a href="https://youtube.com/@eedaclive?si=sJq2FKd9f0DVSUSm" target="_blank" rel="noopener" class="btn youtube">
       <i class="fab fa-youtube"></i> YouTube
     </a>
+    
+<!-- Mais informações -->
 
-    <h5>Projeto feito pela oficina de programação da turma MANUINTMANA TEC</h5>
+    <h5>Projeto feito pela oficina de programação da turma MANUINTMANA TEC. Para mais informações:</h5>
+
+    <style>
+        /* Estilo do link/botão azul */
+        .link-info {
+            color: blue;
+            text-decoration: underline;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 0;
+        }
+
+        /* Estilo da janela (Modal) */
+        dialog {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            padding: 20px;
+            width: 300px;
+        }
+
+        dialog::backdrop {
+            background: rgba(0, 0, 0, 0.5); /* Escurece o fundo */
+        }
+
+        .fechar-btn {
+            display: block;
+            margin-top: 15px;
+            color: red;
+            cursor: pointer;
+            border: 1px solid red;
+            background: white;
+            border-radius: 4px;
+            padding: 5px 10px;
+        }
+    </style>
+  <button class="link-info" onclick="document.getElementById('meuModal').showModal()">
+        Clique aqui
+    </button>
+
+    <dialog id="meuModal">
+        <h3>Informações Adicionais</h3>
+        <p>A presente plataforma digital foi instituída com a finalidade de otimizar os processos de comunicação, gestão e acompanhamento das atividades acadêmicas, constituindo-se como um ambiente virtual seguro, organizado e destinado ao suporte das práticas educacionais.
+
+Ao acessar e utilizar a plataforma, o usuário declara estar ciente e de acordo com as normas estabelecidas pela escola, comprometendo-se a fazer uso adequado dos recursos disponibilizados, pautado nos princípios de responsabilidade, ética e respeito às diretrizes institucionais.
+
+Os serviços oferecidos por meio desta plataforma poderão abranger a acessibilidade de envio e recebimento de atividades, acompanhamento de atualizações escolares.
+
+Ressalta-se que é de inteira responsabilidade do usuário a guarda e sigilo de suas credenciais de acesso (login e senha), sendo vedado o compartilhamento dessas informações com terceiros.
+
+A instituição compromete-se a adotar medidas cabiveis para a proteção, integridade e confidencialidade dos dados inseridos na plataforma, utilizando-os exclusivamente para fins educacionais e administrativos, em conformidade com a legislação vigente.
+
+Para esclarecimentos adicionais, suporte técnico ou quaisquer outras informações, o usuário deverá entrar em contato com os responsáveis administradores da plataforma ou da escola:
+Para suporte na plataforma, contate: mynameisthiagosouza@gmail.com
+Contato do coordenador da escola: +55 (82) 8136-7274
+
+</p>
+        
+        <button class="fechar-btn" onclick="document.getElementById('meuModal').close()">
+            Fechar
+        </button>
+    </dialog>
   
-
   <script src="script.js"></script>
   </footer>
 </body>
-  </html>
+</html>
