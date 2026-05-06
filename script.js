@@ -1,13 +1,14 @@
 // ================== DADOS & HELPERS ==================
 const TURMAS = [
-  "1MANUINTMANA","1A","1B","1A(NOTURNO)","1B(NOTURNO)",
-  "2A","2COMÉINTCOMA","2A(NOTURNO)","2B(NOTURNO)",
-  "3A","3B","3A(NOTURNO)","3B(NOTURNO)"
+  "1TécA","1TécB","2Téc","2A","2B",
+  "3Téc","3A","1A(Noturno)","1B(Noturno)",
+  "2A(Noturno)","3A(Noturno)","3B(NOTURNO)","EJA(NOTURNO)"
 ];
-const VALID_TAGS = ["Matemática","Filosofia","Português","História","Geografia","Física","Química","Biologia","Inglês","Artes","Educação Física","Projeto de Vida"];
+const VALID_TAGS = ["Matemática","Filosofia","Português","História","Geografia","Física","Química","Biologia","Inglês","Artes","Educação Física","Projeto de Vida","Informática","Comércio"];
 const GENERAL_RESOURCES = [
   { title: "teste", type: "vídeo", url: "https://youtu.be/dQw4w9WgXcQ" },
   { title: "Alagoas", type: "site", url: "https://example.com" }
+  { title: "Thiago Lemos", type: "Não abra", url: "https://youtu.be/tEFU46jYVOI?si=_VpjgBBT-PwOTMfs" }
 ];
 const SUBJECT_RESOURCES = {}; // (mantido vazio aqui; você já tem conteúdo hardcoded no menu lateral)
 
@@ -301,6 +302,25 @@ function updateProfileUI(){
         } else {
             teacherAreaLink.style.display = "none";
         }
+    }
+}
+
+
+async function handleRegister() {
+    const role = document.getElementById('userRole').value;
+    const key = document.getElementById('teacherKey').value;
+
+    const response = await fetch('https://seu-servidor.com/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: role, key: key })
+    });
+
+    const result = await response.json();
+    if (result.success) {
+        alert("Conta criada com sucesso!");
+    } else {
+        alert("Chave inválida ou já utilizada.");
     }
 }
 
@@ -753,7 +773,7 @@ window.addEventListener("click", (e) => {
 
     // 3. CARREGAR AO ABRIR A PÁGINA
     function carregarLinks() {
-        const materias = ["Matemática", "Português", "Física", "Química", "Biologia", "História", "Geografia", "Inglês", "Artes", "Educação Física", "Filosofia", "Sociologia", "Projeto de Vida"];
+        const materias = ["Matemática", "Português", "Física", "Química", "Biologia", "História", "Geografia", "Inglês", "Artes", "Educação Física", "Filosofia", "Sociologia", "Projeto de Vida","Informática","Comércio"];
         const anos = ["1º Ano", "2º Ano", "3º Ano"];
 
         materias.forEach(m => {
