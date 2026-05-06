@@ -122,7 +122,7 @@ body {
 }
 
 .imagem {
-    width: 70px;
+    width: 200px;
     display: block;
 }
 
@@ -136,7 +136,8 @@ body {
 }
 
 .brasao-compacto {
-  width: 70px;           /* Tamanho pequeno para o brasão */
+  width: 150px;           /* Tamanho pequeno para o brasão */
+  height: auto;
   flex-shrink: 0;         /* Impede que o brasão seja "esmagado" */
   display: block;
 }
@@ -315,3 +316,4 @@ h5{color:#666;margin-top:12px;font-weight:normal}
 .main-folder-btn.active .arrow {
   transform: rotate(90deg);
 }
+
