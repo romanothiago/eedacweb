@@ -114,19 +114,134 @@ body {
 /* keep toggle visible above menu */
 .menu-toggle{z-index:1201}
 
-/* ================== WELCOME VIDEO ================== */
-main{padding:12px}
-.welcome-section{width:100%;max-width:900px;margin:18px auto;text-align:center}
-.welcome-section video{width:100%;border-radius:8px;display:block}
+/* Favicon */
+.cabecalho {
+    display: flex;
+    align-items: left; /* alinha verticalmente */
+    gap: 5px; /* espaço entre imagem e texto */
+}
 
-/* ================== SLIDESHOW (MENOR) ================== */
-.slideshow-wrapper{display:flex;justify-content:center;margin:10px 0}
-.slideshow-container{max-width:360px;width:100%;position:relative;border-radius:8px;overflow:hidden;background:var(--card);box-shadow:0 6px 18px rgba(0,0,0,0.06)}
-.slideshow-container img{width:100%;display:block}
-.controls{display:flex;justify-content:space-between;padding:8px;background:#f9fbff}
-.slide-btn{background:none;border:none;font-size:20px;cursor:pointer}
+.imagem {
+    width: 200px;
+    display: block;
+}
 
-/* ================== FOLDERS (onde você pode renderizar coisas dinamicamente) ================== */
+
+.header-container {
+  display: flex;          /* Força um ao lado do outro */
+  align-items: flex-end;  /* Alinha a base do texto com a base do brasão */
+  gap: 15px;              /* Espaço exato entre a imagem e o texto */
+  padding: 10px;
+  max-width: 100%;
+}
+
+.brasao-compacto {
+  width: 150px;           /* Tamanho pequeno para o brasão */
+  height: auto;
+  flex-shrink: 0;         /* Impede que o brasão seja "esmagado" */
+  display: block;
+}
+
+.texto-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;     /* Ajuste fino para alinhar com o fundo do brasão */
+}
+
+.texto-container h1 {
+  font-family: sans-serif;
+  font-size: 1.8rem;      /* Tamanho mais equilibrado */
+  color: #1a2a4e;         /* O azul marinho elegante */
+  line-height: 1.1;
+  margin: 0;
+  font-weight: 700;
+}
+
+.texto-container p {
+  font-family: sans-serif;
+  font-size: 1rem;
+  color: #666;            /* Cinza discreto */
+  margin: 5px 0 0 0;
+}
+
+
+/* ============= SLIDESHOW ============== */
+:root {
+  --border-radius: 16px;
+  --transition-speed: 0.4s;
+}
+
+.slideshow-wrapper {
+  max-width: 800px; /* Ou a largura que preferir */
+  margin: 2rem auto;
+  padding: 0 20px;
+}
+
+.slideshow-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background: #f4f4f4; /* Cor de fundo enquanto carrega */
+}
+
+.slide {
+  display: none;
+  animation: fadeIn var(--transition-speed) ease-in-out;
+}
+
+.slide img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.slide img:hover {
+  transform: scale(1.02); /* Leve zoom ao passar o mouse */
+}
+
+/* Controles Modernos */
+.controls {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  pointer-events: none; /* Evita que o container dos botões bloqueie o clique na imagem */
+  padding: 0 15px;
+}
+
+.slide-btn {
+  pointer-events: auto; /* Reativa o clique nos botões */
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(5px); /* Efeito de vidro fosco */
+  border: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #333;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.slide-btn:hover {
+  background: #fff;
+  transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(1.05); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* =============== FOLDERS ============== */
 .folders{max-width:900px;margin:18px auto;padding:0 8px}
 .folders-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:10px}
 .folder{border:1px solid #ddd;border-radius:6px;background:#fff;overflow:hidden}
@@ -149,7 +264,6 @@ main{padding:12px}
 footer.social-buttons{text-align:center;margin:22px 0 40px;padding:0 12px}
 footer .btn{margin:6px;text-decoration:none;padding:8px 12px;border-radius:6px;display:inline-block;color:#fff}
 footer .instagram{background:#d6249f}
-footer .facebook{background:#1877f2}
 footer .youtube{background:#ff0000}
 h5{color:#666;margin-top:12px;font-weight:normal}
 
