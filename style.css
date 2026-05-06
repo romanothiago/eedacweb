@@ -122,7 +122,7 @@ body {
 }
 
 .imagem {
-    width: 200px;
+    width: 70px;
     display: block;
 }
 
@@ -137,7 +137,6 @@ body {
 
 .brasao-compacto {
   width: 70px;           /* Tamanho pequeno para o brasão */
-  height: auto;
   flex-shrink: 0;         /* Impede que o brasão seja "esmagado" */
   display: block;
 }
