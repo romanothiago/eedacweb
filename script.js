@@ -7,7 +7,7 @@ const TURMAS = [
 const VALID_TAGS = ["Matemática","Filosofia","Português","História","Geografia","Física","Química","Biologia","Inglês","Artes","Educação Física","Projeto de Vida","Informática","Comércio"];
 const GENERAL_RESOURCES = [
   { title: "teste", type: "vídeo", url: "https://youtu.be/dQw4w9WgXcQ" },
-  { title: "Alagoas", type: "site", url: "https://example.com" }
+  { title: "Alagoas", type: "site", url: "https://example.com" },
   { title: "Thiago Lemos", type: "Não abra", url: "https://youtu.be/tEFU46jYVOI?si=_VpjgBBT-PwOTMfs" }
 ];
 const SUBJECT_RESOURCES = {}; // (mantido vazio aqui; você já tem conteúdo hardcoded no menu lateral)
