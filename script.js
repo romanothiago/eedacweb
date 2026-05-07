@@ -8,7 +8,7 @@ const VALID_TAGS = ["Matemática","Filosofia","Português","História","Geografi
 const GENERAL_RESOURCES = [
   { title: "teste", type: "vídeo", url: "https://youtu.be/dQw4w9WgXcQ" },
   { title: "Alagoas", type: "site", url: "https://example.com" },
-  { title: "Thiago Lemos", type: "Não abra", url: "https://youtu.be/tEFU46jYVOI?si=_VpjgBBT-PwOTMfs" }
+  { title: "Thiago Lemos", type: "vídeo", url: "https://youtu.be/tEFU46jYVOI?si=_VpjgBBT-PwOTMfs" }
 ];
 const SUBJECT_RESOURCES = {}; // (mantido vazio aqui; você já tem conteúdo hardcoded no menu lateral)
 
@@ -248,7 +248,48 @@ if (teacherAreaBtn) {
     });
   }
 
-  // ================== PROFILE UI ==================
+
+
+// =========== Modal de saida ==============
+
+// 1. Elementos
+const logoutTrigger = document.getElementById('logoutBtn'); // Link no dropdown
+const logoutModal = document.getElementById('logout-modal'); // O modal
+const closeX = document.getElementById('close-logout'); // O "X" de fechar
+const btnCancelar = document.getElementById('btn-cancelar-logout');
+const btnSairReal = document.getElementById('btn-confirmar-sair');
+
+// 2. Abrir o modal ao clicar em "Sair" no dropdown
+logoutTrigger.addEventListener('click', (e) => {
+  e.preventDefault(); // Evita que a página recarregue
+  logoutModal.style.display = 'flex'; // Exibe o modal
+  
+  // Opcional: Fecha o menu dropdown se ele estiver aberto
+  document.getElementById('dropdownMenu').style.display = 'none';
+});
+
+// 3. Funções para fechar o modal
+const fecharModalSair = () => {
+  logoutModal.style.display = 'none';
+};
+
+closeX.onclick = fecharModalSair;
+btnCancelar.onclick = fecharModalSair;
+
+// Fechar se clicar fora da janelinha branca
+window.addEventListener('click', (event) => {
+  if (event.target == logoutModal) {
+    fecharModalSair();
+  }
+});
+
+// 4. AÇÃO REAL DE SAIR
+  const logoutBtn = $("btn-confirmar-sair");
+  if(logoutBtn) logoutBtn.addEventListener("click", e=> { e.preventDefault(); clearLoggedInUsername(); setLoggedInUserUI(null); if(dropdown) dropdown.style.display='none'; });
+  
+  
+  
+  // =========== PROFILE UI ===============
   function setLoggedInUserUI(username){
     const profileEl = $("profile");
     const registerBtn = $("register-btn");
@@ -333,9 +374,7 @@ async function handleRegister() {
   }
   document.addEventListener("click", ()=> { if(dropdown) dropdown.style.display = "none"; });
 
-  // logout
-  const logoutBtn = $("logoutBtn");
-  if(logoutBtn) logoutBtn.addEventListener("click", e=> { e.preventDefault(); clearLoggedInUsername(); setLoggedInUserUI(null); if(dropdown) dropdown.style.display='none'; });
+
 
   // ================== ACCOUNT (minha conta) ==================
   function renderAccountForm(){
@@ -807,3 +846,4 @@ document.querySelectorAll('.main-folder-btn').forEach(button => {
     }
   });
 });
+
