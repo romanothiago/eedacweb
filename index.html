@@ -31,34 +31,6 @@
     <ul id="search-results" class="search-results" aria-live="polite"></ul>
   </header>
 
-  <!-- ================== Menu Lateral (matérias) ================== -->
-  <nav id="side-menu" class="side-menu" aria-hidden="true">
-    <!-- MATÉRIAS: cada .subject tem .subject-toggle + .subject-content (anos) -->
-    <!-- (o conteúdo das matérias foi mantido igual ao seu original) -->
-
-    <!-- Matemática -->
-    <div class="subject">
-      <button class="subject-toggle">Matemática</button>
-      <div class="subject-content">
-        <button class="year-toggle">1º Ano</button>
-        <div class="year-content">
-          <a href="#" class="material-link" target="_blank" rel="noopener">Vídeo Aula 1</a>
-        </div>
-        <button class="year-toggle">2º Ano</button>
-        <div class="year-content">
-          <a href="#" class="material-link" target="_blank" rel="noopener">Vídeo Aula 1</a>
-        </div>
-        <button class="year-toggle">3º Ano</button>
-                <div class="year-content">
-          <a href="#" class="material-link" target="_blank" rel="noopener">Video Aula 1</a>
-            <a href="#" id="videoAula1" class="material-link" target="_blank" rel="noopener">
-          Vídeo Aula 1
-        </a>
-      </div>
-
-    </div>
-  </div>
-
 <script>
 // ==================== SISTEMA DE LINKS ====================
 
@@ -98,18 +70,39 @@ function salvarLink() {
   carregarLinks(); // Atualiza na tela
 }
 
-// Alternar visibilidade das seções (accordion)
-document.querySelectorAll('.subject-toggle, .year-toggle').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const content = btn.nextElementSibling;
-    content.style.display = content.style.display === 'block' ? 'none' : 'block';
-  });
-});
+
 
 // Inicializa ao carregar a página
 window.onload = carregarLinks;
 </script>
 
+  <!-- ================== Menu Lateral (matérias) ================== -->
+  <nav id="side-menu" class="side-menu" aria-hidden="true">
+    <!-- MATÉRIAS: cada .subject tem .subject-toggle + .subject-content (anos) -->
+    <!-- (o conteúdo das matérias foi mantido igual ao seu original) -->
+
+    <!-- Matemática -->
+    <div class="subject">
+      <button class="subject-toggle">Matemática</button>
+      <div class="subject-content">
+        <button class="year-toggle">1º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link" target="_blank" rel="noopener">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">2º Ano</button>
+        <div class="year-content">
+          <a href="#" class="material-link" target="_blank" rel="noopener">Vídeo Aula 1</a>
+        </div>
+        <button class="year-toggle">3º Ano</button>
+                <div class="year-content">
+          <a href="#" class="material-link" target="_blank" rel="noopener">Video Aula 1</a>
+            <a href="#" id="videoAula1" class="material-link" target="_blank" rel="noopener">
+          Vídeo Aula 1
+        </a>
+      </div>
+
+    </div>
+  </div>
 
     <!-- Português -->
     <div class="subject">
@@ -370,6 +363,17 @@ window.onload = carregarLinks;
   </div>
 </div>
 
+
+
+<!-- Mídias Sociais da escola -->
+  <footer class="social-buttons">
+    <a href="https://www.instagram.com/eedac__?igsh=MXZxaDZlbmkzdGYxOQ==" target="_blank" rel="noopener" class="btn instagram">
+      <i class="fab fa-instagram"></i> Instagram
+    </a>
+    <a href="https://youtube.com/@eedaclive?si=sJq2FKd9f0DVSUSm" target="_blank" rel="noopener" class="btn youtube">
+      <i class="fab fa-youtube"></i> YouTube
+    </a>
+    
     
         <!-- Slideshow -->
     <section class="slideshow-wrapper">
@@ -396,15 +400,6 @@ window.onload = carregarLinks;
         </div>
       </div>
     </section>
-
-  <!-- Mídias Sociais da escola -->
-  <footer class="social-buttons">
-    <a href="https://www.instagram.com/eedac__?igsh=MXZxaDZlbmkzdGYxOQ==" target="_blank" rel="noopener" class="btn instagram">
-      <i class="fab fa-instagram"></i> Instagram
-    </a>
-    <a href="https://youtube.com/@eedaclive?si=sJq2FKd9f0DVSUSm" target="_blank" rel="noopener" class="btn youtube">
-      <i class="fab fa-youtube"></i> YouTube
-    </a>
 
     <!-- Pastas principais -->
     <div class="main-folders">
@@ -436,7 +431,7 @@ window.onload = carregarLinks;
       </div>
     </div>
 
-  <!-- ================== Dropdown Perfil (corrigido: sem aninhamento incorreto) ================== -->
+  <!-- ======== Dropdown Perfil ======== -->
   <div id="dropdownMenu" class="dropdown" style="display:none;">
     <div class="dropdown-header">
       <strong id="profile-name">Usuário</strong>
@@ -447,7 +442,10 @@ window.onload = carregarLinks;
     <a href="#" id="open-teacher-area">Área dos Professores</a>
     <a href="#" id="logoutBtn">Sair</a>
   </div>
+  
+  
   <!-- =========== Modais ============= -->
+  
   <!-- Auth -->
   <div id="auth-modal" class="modal" aria-hidden="true">
     <div class="modal-content auth-content">
@@ -491,7 +489,7 @@ window.onload = carregarLinks;
           </div>
 
           <div id="professor-turmas-container" style="display:none;">
-            <label>Turmas (se for professor):</label>
+            <label>Turmas:</label>
             <div id="professor-turmas" class="professor-turmas"></div>
           </div>
 
@@ -564,74 +562,6 @@ window.onload = carregarLinks;
   </div>
 </div>
 
-  <!-- ===== ESTILO DA MODAL ===== -->
-  <style>
-    #perfil-modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0,0,0,0.6);
-      justify-content: center;
-      align-items: center;
-    }
-
-    #perfil-modal .modal-content {
-      background-color: #fff;
-      width: 90%;
-      max-width: 450px;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-      font-family: sans-serif;
-      position: relative;
-    }
-
-    #perfil-modal h2 {
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
-    #perfil-modal label {
-      display: block;
-      margin-top: 10px;
-      font-weight: 600;
-    }
-
-    #perfil-modal select,
-    #perfil-modal input[type="file"],
-    #perfil-modal button {
-      width: 100%;
-      margin-top: 5px;
-      padding: 8px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-
-    #perfil-modal button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      margin-top: 15px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    #perfil-modal button:hover {
-      background-color: #0056b3;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 25px;
-      cursor: pointer;
-      color: #333;
-    }
-  </style>
-
   <!-- ===== SCRIPT PARA ABRIR/FECHAR ===== -->
   <script>
     const perfilModal = document.getElementById("perfil-modal");
@@ -649,63 +579,39 @@ window.onload = carregarLinks;
     window.onclick = e => { if (e.target === perfilModal) perfilModal.style.display = "none"; };
   </script>
   
-  <!-- Admin -->
-  <div id="admin-modal" class="modal" aria-hidden="true">
-    <div class="modal-content">
-      <span id="close-admin-modal" class="close">&times;</span>
-      <h2>Administração</h2>
-      <p>Digite a cereal-key para autenticar:</p>
-      <input type="password" id="admin-key" placeholder="Cereal-key" />
-      <button id="verify-admin">Verificar</button>
-
       <div id="upload-section" style="display:none; margin-top:15px;">
         <p>Upload do boletim (base para professores)</p>
         <textarea id="admin-boletins" placeholder="Formato: turma;aluno;disciplina;nota" style="width:100%; height:100px;"></textarea>
         <button id="upload-boletins">Enviar boletins</button>
       </div>
+
+<!-- Sair -->
+
+<div id="logout-modal" class="modal" style="display:none;">
+  <div class="modal-content" style="max-width: 400px;">
+    <span id="close-logout" class="close">&times;</span>
+    
+    <h2>Sair da Conta</h2>
+    <p style="margin-bottom: 25px; color: #64748b;">Deseja realmente encerrar sua sessão atual?</p>
+    
+    <div style="display: flex; gap: 12px;">
+      <button id="btn-cancelar-logout" style="flex: 1; padding: 14px; background: #f1f5f9; color: #475569; border: 1.5px solid #e2e8f0; border-radius: 10px; font-weight: 600; cursor: pointer;">
+        Cancelar
+      </button>
+
+      <button id="btn-confirmar-sair" style="flex: 1; padding: 14px; background: #ef4444; color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+        Sair Agora
+      </button>
     </div>
   </div>
-  
+</div>
+
+
 <!-- Mais informações -->
 
     <h5>Projeto feito pela oficina de programação da turma MANUINTMANA TEC. Para mais informações:</h5>
 
-    <style>
-        /* Estilo do link/botão azul */
-        .link-info {
-            color: blue;
-            text-decoration: underline;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            padding: 0;
-        }
 
-        /* Estilo da janela (Modal) */
-        dialog {
-            border: none;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            padding: 20px;
-            width: 300px;
-        }
-
-        dialog::backdrop {
-            background: rgba(0, 0, 0, 0.5); /* Escurece o fundo */
-        }
-
-        .fechar-btn {
-            display: block;
-            margin-top: 15px;
-            color: red;
-            cursor: pointer;
-            border: 1px solid red;
-            background: white;
-            border-radius: 4px;
-            padding: 5px 10px;
-        }
-    </style>
   <button class="link-info" onclick="document.getElementById('meuModal').showModal()">
         Clique aqui
     </button>
@@ -733,7 +639,7 @@ Contato do coordenador da escola: +55 (82) 8136-7274
         </button>
     </dialog>
   
-  <script src="script.js"></script>
   </footer>
+  <script src="script.js"></script>
 </body>
           </html>
