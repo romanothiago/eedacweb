@@ -4,7 +4,10 @@ const TURMAS = [
   "3Téc","3A","1A(Noturno)","1B(Noturno)",
   "2A(Noturno)","3A(Noturno)","3B(NOTURNO)","EJA(NOTURNO)"
 ];
-const VALID_TAGS = ["Matemática","Filosofia","Português","História","Geografia","Física","Química","Biologia","Inglês","Artes","Educação Física","Projeto de Vida","Informática","Comércio"];
+const OP_MATERIAS = ["Matemática","Filosofia","Português","História","Geografia","Física","Química","Biologia","Inglês","Artes","Educação Física","Projeto de Vida","Informática","Comércio"];
+
+const VALID_TAGS = ["#J2711","#T1307","#V8233","#Q9028","#W3451","#E1155","#X5151","#C0962","#S6289","#F4267","#Y3451","#B7152","#D4713","#O5364"];
+
 const GENERAL_RESOURCES = [
   { title: "teste", type: "vídeo", url: "https://youtu.be/dQw4w9WgXcQ" },
   { title: "Alagoas", type: "site", url: "https://example.com" },
@@ -210,31 +213,6 @@ if (teacherAreaBtn) {
     setLoggedInUsername(u.username); setLoggedInUserUI(u.username); return true;
   }
 
-  // register form submit
-  const registerForm = $("register-form");
-  if(registerForm){
-    registerForm.addEventListener("submit", (e)=>{
-      e.preventDefault();
-      const username = ($("username-register") && $("username-register").value || "").trim();
-      const email = ($("email-register") && $("email-register").value || "").trim();
-      const password = ($("password-register") && $("password-register").value || "").trim();
-      const userType = ($("user-type") && $("user-type").value) || "aluno";
-      let tagsArray = [], turmasArray = [];
-      if(userType==="professor"){
-        const tagsStr = ($("professor-tags") && $("professor-tags").value || "").trim();
-        tagsArray = tagsStr ? tagsStr.split(",").map(s=>s.trim()).filter(Boolean) : [];
-        const checkedBoxes = document.querySelectorAll('input[name="turma-professor-register"]:checked');
-        turmasArray = Array.from(checkedBoxes).map(cb=>cb.value);
-      }
-      const fileInput = $("profilePicUpload");
-      const photoFile = (fileInput && fileInput.files && fileInput.files[0]) ? fileInput.files[0] : null;
-      if(registerUser({ username, email, password, userType, tagsArray, turmasArray, photoFile })){
-        alert("Cadastro realizado com sucesso!");
-        if(authModal) authModal.style.display = "none";
-      }
-    });
-  }
-
   // login form submit
   const loginForm = $("login-form");
   if(loginForm){
@@ -366,6 +344,54 @@ async function handleRegister() {
 }
 
 
+// register form submit
+const registerForm = $("register-form");
+if (registerForm) {
+  registerForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    
+    const username = ($("username-register") && $("username-register").value || "").trim();
+    const email = ($("email-register") && $("email-register").value || "").trim();
+    const password = ($("password-register") && $("password-register").value || "").trim();
+    const userType = ($("user-type") && $("user-type").value) || "aluno";
+    
+    let tagsArray = [], turmasArray = [];
+
+    if (userType === "professor") {
+      const tagsStr = ($("professor-tags") && $("professor-tags").value || "").trim();
+      
+      // Transforma a string em array e remove espaços
+      const inputTags = tagsStr ? tagsStr.split(",").map(s => s.trim()).filter(Boolean) : [];
+
+      // VALIDAÇÃO: Filtra apenas as tags que existem no seu VALID_TAGS
+      tagsArray = inputTags.filter(tag => VALID_TAGS.includes(tag));
+
+      // Verifica se o professor inseriu alguma tag inválida ou se deixou vazio
+      if (inputTags.length === 0) {
+        alert("Por favor, insira ao menos uma matéria.");
+        return;
+      }
+
+      if (tagsArray.length !== inputTags.length) {
+        alert("Uma ou mais matérias inseridas são inválidas. Insira matérias de verdade!");
+        return;
+      }
+
+      const checkedBoxes = document.querySelectorAll('input[name="turma-professor-register"]:checked');
+      turmasArray = Array.from(checkedBoxes).map(cb => cb.value);
+    }
+
+    const fileInput = $("profilePicUpload");
+    const photoFile = (fileInput && fileInput.files && fileInput.files[0]) ? fileInput.files[0] : null;
+
+    // Se passou na validação das tags, prossegue com o registro
+    if (registerUser({ username, email, password, userType, tagsArray, turmasArray, photoFile })) {
+      alert("Cadastro realizado com sucesso!");
+      if (authModal) authModal.style.display = "none";
+    }
+  });
+}
+
   // profile dropdown toggle
   const profileBtn = $("profile");
   const dropdown = $("dropdownMenu");
@@ -492,7 +518,7 @@ function openBoletim(){
           </select>
           <select id="boletim-materia" style="flex:1; padding:8px; border-radius:6px; border:none;">
             <option value="">Matéria</option>
-            ${VALID_TAGS.map(m => `<option value="${m}">${m}</option>`).join("")}
+            ${OP_MATERIAS.map(m => `<option value="${m}">${m}</option>`).join("")}
           </select>
           <select id="boletim-bimestre" style="width:150px; padding:8px; border-radius:6px; border:none;">
             <option value="">Bimestre</option>
@@ -846,4 +872,3 @@ document.querySelectorAll('.main-folder-btn').forEach(button => {
     }
   });
 });
-
