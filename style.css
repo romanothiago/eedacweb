@@ -340,6 +340,209 @@ body {
 }
 
 
+/* ===== CONFIGURAÇÕES MODAL ===== */
+#settings-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Overlay padrão */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+#settings-modal .modal-content {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 480px;
+  padding: 50px 40px 40px;
+  position: relative;
+  text-align: center;
+}
+
+/* Título */
+#settings-modal h2 {
+  margin: 0 0 30px 0;
+  color: #1e3a8a;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+/* Botão de fechar */
+#settings-modal .close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: 300;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+#settings-modal .close:hover {
+  color: #1e40af;
+}
+
+/* Container de botões internos */
+#settings-options-container {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+/* Estilo dos botões de opção (imitando o comportamento de lista) */
+.settings-opt-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 8px;
+  color: #334155;
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.settings-opt-btn:last-child {
+  border-bottom: none;
+}
+
+.settings-opt-btn:hover {
+  background: #f1f5f9;
+  color: #1e3a8a;
+}
+
+/* Botão Salvar (Igual ao seu padrão) */
+#save-settings-button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 14px;
+  background: #4169E1;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+#save-settings-button:hover {
+  background: #3154c5; /* Tom levemente mais escuro no hover */
+  transform: translateY(-2px);
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  #settings-modal .modal-content {
+    margin: 15px;
+    border-radius: 12px;
+    padding: 40px 24px 30px;
+  }
+}
+
+/* Overlay e Background */
+.cfg-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 15000; /* Força ficar acima de tudo */
+}
+
+/* Conteúdo da Modal */
+.cfg-content {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 480px;
+  padding: 50px 40px 40px;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.cfg-title {
+  margin: 0 0 30px 0;
+  color: #1e3a8a;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.cfg-close {
+  position: absolute;
+  top: 16px; right: 20px;
+  font-size: 28px; color: #64748b;
+  cursor: pointer;
+}
+
+/* Container que imita seu padrão #f8fafc */
+.cfg-container-azul {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.cfg-flex-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Botões de Opções */
+.cfg-item-btn {
+  width: 100%;
+  background: none; border: none;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 14px 10px;
+  color: #334155;
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cfg-item-btn:last-child { border-bottom: none; }
+.cfg-item-btn:hover { background: #f1f5f9; color: #1e3a8a; }
+
+/* Botão Azul Principal */
+.cfg-btn-primario {
+  width: 100%;
+  padding: 14px;
+  background: #4169E1;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.cfg-btn-primario:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(65, 105, 225, 0.3); }
+
+/* Estilo do Label de Upload */
+.cfg-upload-label {
+  background: #e2e8f0;
+  color: #1e3a8a;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+
 /* ===== MODAL DE PERFIL (PROFESSOR) ===== */
 #perfil-modal .modal-content {
   background: #ffffff;
@@ -799,7 +1002,7 @@ h5{color:#666;margin-top:12px;font-weight:normal}
 
 
 /* ===== DIALOG / INFORMAÇÕES ADICIONAIS ===== */
-#meuModal {
+#Infos .infos {
   border: none;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
@@ -811,13 +1014,13 @@ h5{color:#666;margin-top:12px;font-weight:normal}
 }
 
 /* Efeito de escurecer o fundo (exclusivo para a tag dialog) */
-#meuModal::backdrop {
+#Infos::backdrop {
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(2px);
 }
 
 /* Título */
-#meuModal h3 {
+#Infos h3 {
   margin: 0 0 20px 0;
   color: #1e3a8a;
   font-size: 24px;
@@ -825,7 +1028,7 @@ h5{color:#666;margin-top:12px;font-weight:normal}
 }
 
 /* Texto de conteúdo */
-#meuModal p {
+#Infos p {
   color: #475569;
   line-height: 1.6;
   font-size: 15px;
@@ -875,4 +1078,91 @@ h5{color:#666;margin-top:12px;font-weight:normal}
   }
 }
 
+/* Tema claro e escuro */
 
+:root {
+  /* Cores Tema Claro (Padrão) */
+  --bg-principal: #ffffff;
+  --bg-container: #f8fafc;
+  --texto-principal: #334155;
+  --texto-titulo: #1e3a8a;
+  --border-color: #e2e8f0;
+}
+
+[data-theme="dark"] {
+  /* Cores Tema Escuro (Preto Fosco) */
+  --bg-principal: #1c1c1c; /* Preto Fosco */
+  --bg-container: #1e1e1e; /* Cinza bem escuro para os cards */
+  --texto-principal: #e2e8f0;
+  --texto-titulo: #60a5fa; /* Um azul mais claro para dar contraste no preto */
+  --border-color: #334155;
+}
+
+/* Aplicação das variáveis nos seus estilos existentes */
+body {
+  background-color: var(--bg-principal);
+  color: var(--texto-principal);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.cfg-content {
+  background: var(--bg-principal) !important;
+}
+
+.cfg-container-azul, #materias-container, #turmas-container {
+  background: var(--bg-container) !important;
+  border-color: var(--border-color) !important;
+}
+
+.cfg-title, h1, h2, h3, p {
+  color: var(--texto-titulo) !important;
+}
+
+.cfg-item-btn {
+  color: var(--texto-principal) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+/* Corrigindo os botões das pastas (Quem somos, etc) */
+[data-theme="dark"] .main-folder-btn {
+  background-color: #1e1e1e !important; /* Fundo cinza escuro */
+  color: #93c5fd !important;           /* Texto Azul Claro */
+  border: 1px solid #334155 !important;
+}
+
+[data-theme="dark"] .main-folder-btn:hover {
+  background-color: #2d2d2d !important;
+}
+
+[data-theme="dark"] .main-folder-content {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border-left: 3px solid #4169E1 !important;
+}
+
+/* Forçar TODAS as modais a ficarem escuras */
+[data-theme="dark"] .modal-content, 
+[data-theme="dark"] .cfg-content,
+[data-theme="dark"] #account-modal .modal-content,
+[data-theme="dark"] #settings-modal .cfg-content {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  border: 1px solid #334155 !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Ajustar os textos dentro de qualquer modal */
+[data-theme="dark"] .modal-content h2,
+[data-theme="dark"] .modal-content h3,
+[data-theme="dark"] .cfg-content h2 {
+  color: #93c5fd !important;
+}
+
+/* Ajustar inputs e campos de texto nas modais */
+[data-theme="dark"] input[type="text"],
+[data-theme="dark"] input[type="file"],
+[data-theme="dark"] select {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+  border: 1px solid #475569 !important;
+}
