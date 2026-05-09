@@ -358,10 +358,11 @@ window.onload = carregarLinks;
   <img src="foguetin.png" class="brasao-compacto" alt="Brasão">
   
   <div class="texto-container">
-    <h1>Escola Estadual<br>Desembargador<br>Augusto Costa</h1>
+    <h1>Escola Estadual Desembargador Augusto Costa</h1>
     <p>Nossa Plataforma estudantil está aqui!</p>
   </div>
 </div>
+
 
         <!-- Slideshow -->
     <section class="slideshow-wrapper">
@@ -389,7 +390,7 @@ window.onload = carregarLinks;
       </div>
     </section>
 
-  <!-- Mídias Sociais da escola -->
+<!-- Mídias Sociais da escola -->
   <footer class="social-buttons">
     <a href="https://www.instagram.com/eedac__?igsh=MXZxaDZlbmkzdGYxOQ==" target="_blank" rel="noopener" class="btn instagram">
       <i class="fab fa-instagram"></i> Instagram
@@ -436,7 +437,7 @@ window.onload = carregarLinks;
     </div>
     <a href="#" id="open-account">Minha Conta</a>
     <a href="#" id="view-report">Boletim</a>
-    <!-- uploadAulaBtn será inserido dinamicamente pelo JS se o usuário for professor -->
+    <a href="#" id="configBtn">Configurações</a>
     <a href="#" id="open-teacher-area">Área dos Professores</a>
     <a href="#" id="logoutBtn">Sair</a>
   </div>
@@ -511,6 +512,72 @@ window.onload = carregarLinks;
       <button id="save-account-button">Salvar</button>
     </div>
   </div>
+
+
+<!-- Configurações -->
+<div id="settings-modal" class="cfg-overlay" style="display: none;">
+  <div class="cfg-content">
+    <span class="cfg-close" id="settings-close">&times;</span>
+    <h2 class="cfg-title">Configurações</h2>
+    
+    <div class="cfg-container-azul">
+      <button class="cfg-item-btn" id="cfg-trigger-photo">Trocar foto de perfil</button>
+      <button class="cfg-item-btn">Enviar atestado / Justificar ausência</button>
+<button class="cfg-item-btn" id="cfg-toggle-theme">Alterar tema (Claro/Escuro)</button>
+      <button class="cfg-item-btn">Trocar senha</button>
+    </div>
+    
+    <button id="cfg-save-all" class="cfg-btn-primario">Salvar Preferências</button>
+  </div>
+</div>
+
+<!-- Trocar foto de perfil -->
+<div id="cfg-modal-photo" class="cfg-overlay" style="display: none;">
+  <div class="cfg-content">
+    <span class="cfg-close" id="cfg-photo-close">&times;</span>
+    <h2 class="cfg-title">Nova Foto</h2>
+
+    <div class="cfg-container-azul cfg-flex-center">
+      <div id="cfg-preview-circle" class="profile-photo" style="margin-bottom: 20px; border: 3px solid #4169E1;"></div>
+      
+      <label for="profilePicUpload" class="cfg-upload-label">Selecionar Imagem</label>
+      <input type="file" id="profilePicUpload" accept="image/*" style="display: none;" />
+    </div>
+
+    <button id="cfg-confirm-photo" class="cfg-btn-primario">Confirmar Foto</button>
+  </div>
+</div>
+  
+  <!-- Modal Trocar Senha -->
+<div id="cfg-modal-pass" class="cfg-overlay" style="display: none;">
+  <div class="cfg-content">
+    <span class="cfg-close" id="cfg-pass-close">&times;</span>
+    <h2 class="cfg-title">Trocar Senha</h2>
+
+    <div class="cfg-container-azul cfg-flex-center">
+      <h3 style="text-align: center; margin: 20px 0;">Funcionalidade em modo de teste</h3>
+      <p style="font-size: 14px; color: #64748b; text-align: center;">O sistema de redefinição de segurança está sendo atualizado pela administração.</p>
+    </div>
+
+    <button class="cfg-btn-primario" onclick="this.parentElement.parentElement.style.display='none'; document.getElementById('settings-modal').style.display='flex'">Voltar</button>
+  </div>
+</div>
+
+<!-- Modal Enviar Atestado -->
+<div id="cfg-modal-justify" class="cfg-overlay" style="display: none;">
+  <div class="cfg-content">
+    <span class="cfg-close" id="cfg-justify-close">&times;</span>
+    <h2 class="cfg-title">Justificar Ausência</h2>
+
+    <div class="cfg-container-azul cfg-flex-center">
+      <h3 style="text-align: center; margin: 20px 0;">Funcionalidade em modo de teste</h3>
+      <p style="font-size: 14px; color: #64748b; text-align: center;">O portal de envio de documentos médicos abrirá em breve para os alunos.</p>
+    </div>
+
+    <button class="cfg-btn-primario" onclick="this.parentElement.parentElement.style.display='none'; document.getElementById('settings-modal').style.display='flex'">Voltar</button>
+  </div>
+</div>
+
   
 <!-- ===== MODAL DE PERFIL (UPLOAD DE AULAS) ===== -->
 <div id="perfil-modal" class="modal" style="display:none;">
@@ -640,4 +707,4 @@ Contato do coordenador da escola: +55 (82) 8136-7274
   </footer>
   <script src="script.js"></script>
 </body>
-          </html>
+                                            </html>
