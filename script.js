@@ -872,3 +872,174 @@ document.querySelectorAll('.main-folder-btn').forEach(button => {
     }
   });
 });
+
+
+
+// 1. Elementos da Modal Principal
+const configBtn = document.getElementById('configBtn');
+const settingsModal = document.getElementById('settings-modal');
+const settingsClose = document.getElementById('settings-close');
+
+// 2. Elementos da Sub-Modal de Foto
+const modalPhoto = document.getElementById('cfg-modal-photo');
+const btnTriggerPhoto = document.getElementById('cfg-trigger-photo');
+const btnClosePhoto = document.getElementById('cfg-photo-close');
+const fileInput = document.getElementById('profilePicUpload');
+const previewCircle = document.getElementById('cfg-preview-circle');
+const btnConfirmPhoto = document.getElementById('cfg-confirm-photo');
+const profilePhotoOriginal = document.getElementById('profile-photo'); // Sua bolinha no topo
+
+// --- abertura e fechamento ---
+
+// Abrir a Modal Principal
+configBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  document.getElementById('dropdownMenu').style.display = 'none'; // Fecha o dropdown
+  settingsModal.style.display = 'flex';
+});
+
+// Fechar a Modal Principal
+settingsClose.addEventListener('click', () => {
+  settingsModal.style.display = 'none';
+});
+
+// --- Modal troca de foto ---
+
+// Ir da modal principal para a de foto
+btnTriggerPhoto.addEventListener('click', () => {
+  settingsModal.style.display = 'none';
+  modalPhoto.style.display = 'flex';
+});
+
+// Fechar a modal de foto e voltar para a principal
+btnClosePhoto.addEventListener('click', () => {
+  modalPhoto.style.display = 'none';
+  settingsModal.style.display = 'flex';
+});
+
+// Preview em tempo real ao selecionar arquivo
+fileInput.addEventListener('change', function() {
+  const file = this.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      previewCircle.style.backgroundImage = `url(${e.target.result})`;
+      previewCircle.style.backgroundSize = 'cover';
+      previewCircle.style.backgroundPosition = 'center';
+    }
+    reader.readAsDataURL(file);
+  }
+});
+
+// Confirmar a foto e atualizar a bolinha original
+btnConfirmPhoto.addEventListener('click', () => {
+  if (previewCircle.style.backgroundImage) {
+    // Atualiza a bolinha original
+    profilePhotoOriginal.style.backgroundImage = previewCircle.style.backgroundImage;
+    profilePhotoOriginal.style.backgroundSize = 'cover';
+    
+    alert("Foto de perfil atualizada com sucesso!");
+    
+    // volta pra principal
+    modalPhoto.style.display = 'none';
+    settingsModal.style.display = 'flex';
+  } else {
+    alert("Por favor, selecione uma imagem.");
+  }
+});
+
+// --- out click ---
+
+window.addEventListener('click', (e) => {
+  // Se clicar fora da modal principal
+  if (e.target === settingsModal) {
+    settingsModal.style.display = 'none';
+  }
+  // Se clicar fora da modal de foto
+  else if (e.target === modalPhoto) {
+    modalPhoto.style.display = 'none';
+    settingsModal.style.display = 'flex';
+  }
+});
+
+
+//========= Tema claro e escuro ===========
+
+const themeBtn = document.getElementById('cfg-toggle-theme');
+const htmlElement = document.documentElement;
+
+// Função para aplicar o tema
+function applyTheme(theme) {
+  htmlElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+}
+
+// 1. Detectar preferência do Navegador ou Escolha Salva
+const savedTheme = localStorage.getItem('theme');
+const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+if (savedTheme) {
+  applyTheme(savedTheme);
+} else if (systemPrefersDark.matches) {
+  applyTheme('dark');
+}
+
+// 2. Ouvir mudanças no tema do Navegador em tempo real
+systemPrefersDark.addEventListener('change', (e) => {
+  if (!localStorage.getItem('theme')) { // Só muda se o usuário não escolheu manualmente
+    applyTheme(e.matches ? 'dark' : 'light');
+  }
+});
+
+// 3. Alternar tema ao clicar no botão
+themeBtn.addEventListener('click', () => {
+  const currentTheme = htmlElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  applyTheme(newTheme);
+});
+
+
+// --- NOVAS MODAIS: SENHA E ATESTADO ---
+
+const modalPass = document.getElementById('cfg-modal-pass');
+const modalJustify = document.getElementById('cfg-modal-justify');
+
+// Seleção dos botões na modal de configurações (pela ordem/texto se não tiverem ID)
+const btnTriggerPass = document.getElementById('set-pass') || document.querySelectorAll('.cfg-item-btn')[3];
+const btnTriggerJustify = document.getElementById('set-medical') || document.querySelectorAll('.cfg-item-btn')[1];
+
+// Abrir Modal Senha
+btnTriggerPass.addEventListener('click', () => {
+    settingsModal.style.display = 'none';
+    modalPass.style.display = 'flex';
+});
+
+// Abrir Modal Atestado
+btnTriggerJustify.addEventListener('click', () => {
+    settingsModal.style.display = 'none';
+    modalJustify.style.display = 'flex';
+});
+
+// Fechar Modal Senha
+document.getElementById('cfg-pass-close').addEventListener('click', () => {
+    modalPass.style.display = 'none';
+    settingsModal.style.display = 'flex';
+});
+
+// Fechar Modal Atestado
+document.getElementById('cfg-justify-close').addEventListener('click', () => {
+    modalJustify.style.display = 'none';
+    settingsModal.style.display = 'flex';
+});
+
+// Atualização do clique fora para incluir as novas modais
+window.addEventListener('click', (e) => {
+    if (e.target === modalPass) {
+        modalPass.style.display = "none";
+        settingsModal.style.display = "flex";
+    }
+    if (e.target === modalJustify) {
+        modalJustify.style.display = "none";
+        settingsModal.style.display = "flex";
+    }
+});
