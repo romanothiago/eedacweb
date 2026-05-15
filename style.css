@@ -1,9 +1,9 @@
 /* ================== BASE ================== */
 :root{
   --blue:#0d1f45;
-  --brand:#4169E1;
-  --muted:#f5f7fb;
-  --card:#ffffff;
+  --brand: #4169E1;
+  --muted: #f5f7fb;
+  --card: #ffffff;
 }
 *{box-sizing:border-box}
 body {
@@ -653,6 +653,364 @@ body {
   }
 }
 
+/* =========================== chatBot ============================ */
+
+/* Botão Flutuante Moderno */
+.jb-floating-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #004aad, #002d6b);
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 9998;
+  box-shadow: 0 8px 24px rgba(0, 74, 173, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.jb-floating-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 74, 173, 0.5);
+}
+
+.jb-pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #004aad;
+  animation: jb-pulse-anim 2s infinite;
+  z-index: -1;
+  opacity: 0.5;
+}
+
+@keyframes jb-pulse-anim {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Modal Fullscreen */
+.jb-modal-overlay {
+  display: none; /* Escondido por padrão */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #e5ddd5; /* Fundo estilo WhatsApp */
+  z-index: 9999;
+  flex-direction: column;
+}
+
+.jb-modal-header {
+  background: #002d6b;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.jb-user-info { display: flex; align-items: center; gap: 12px; }
+
+.jb-avatar {
+  width: 40px;
+  height: 40px;
+  background: #004aad;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.jb-close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.jb-chat-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Mensagens */
+.jb-msg {
+  max-width: 85%;
+  padding: 12px 16px;
+  border-radius: 15px;
+  font-size: 15px;
+  line-height: 1.5;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.jb-msg-bot {
+  align-self: flex-start;
+  background: rgb(22, 19, 201);
+  border-top-left-radius: 2px;
+}
+
+.jb-msg-user {
+  align-self: flex-end;
+  background: #0780f1;
+  border-top-right-radius: 2px;
+}
+
+/* Botões de Perguntas */
+.jb-options-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  align-self: flex-start;
+}
+
+.jb-btn-question {
+  background: #002d6b;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 18px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.jb-btn-question:hover { background: #004aad; }
+
+
+/* Estilização da Modal de Simulados */
+#simulado-modal .cfg-content {
+    background-color: #ffffff; /* Fundo Branco */
+    color: #333;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+#simulado-modal .cfg-title {
+    color: #002D5E; /* Azul Escuro */
+    border-bottom: 2px solid #002D5E;
+    padding-bottom: 10px;
+}
+
+/* Botões Azul Escuro */
+.btn-azul-escuro {
+    background-color: #002D5E !important;
+    color: white !important;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn-azul-escuro:hover {
+    background-color: #001f3f !important; /* Tom ainda mais escuro no hover */
+}
+
+/* Campos de entrada dentro da modal */
+.simulado-input {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.cfg-container-azul {
+    background-color: #f1f1f1; /* Fundo leve para destacar os campos */
+    padding: 15px;
+    border-radius: 8px;
+}
+
+
+/* ===== BOTÃO DE ACESSO (LARANJA) ===== */
+#btn-abrir-adm {
+  background-color: hsl(28, 100%, 52%); /* Laranja solicitado */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+#btn-abrir-adm:hover {
+  background-color: #e67e22;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(242, 153, 74, 0.3);
+}
+
+/* ===== ESTRUTURA BASE DAS MODAIS ADM ===== */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: none; /* Controlado pelo JS */
+  justify-content: center;
+  align-items: center;
+  z-index: 15000;
+}
+
+.modal-content {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  position: relative;
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Tamanhos Específicos */
+.admin-mini-modal { max-width: 380px; padding: 50px 30px 40px; text-align: center; }
+.admin-main-layout { max-width: 850px; padding: 40px; text-align: left; }
+
+/* Títulos e Fechar */
+.modal-content h2, .modal-content h3 {
+  margin: 0 0 20px 0;
+  color: #ff501a;
+  font-weight: 600;
+}
+
+.close {
+  position: absolute;
+  top: 16px; right: 20px;
+  font-size: 28px; color: #64748b;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.close:hover { color: #ff501a; }
+
+/* ===== ELEMENTOS INTERNOS (ESTILO CONFIGURAÇÕES) ===== */
+
+/* Container Cinza Azulado */
+.admin-container-inner, .admin-card {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* Inputs */
+.modal-content input[type="password"],
+.modal-content input[type="text"],
+.modal-content input[type="url"],
+.modal-content select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0 15px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.modal-content input:focus { border-color: #ee550d; }
+
+/* Botão Azul Principal */
+#btn-validar-senha, .btn-primary-adm {
+  width: 100%;
+  padding: 14px;
+  background: #ee540d;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#btn-validar-senha:hover, .btn-primary-adm:hover {
+  background: #ee540d;
+  transform: translateY(-2px);
+}
+
+/* Grid Administrativo */
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* Status e Botões Secundários */
+.status-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #ffffff;
+  font-size: 14px;
+  color: #475569;
+}
+
+.btn-info {
+  width: 100%;
+  background: white;
+  border: 1px solid #ffffff;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-info:hover { background: #ffffff; color: #1e3a8a; }
+
+.btn-atestado {
+  width: 100%;
+  background: white;
+  border: 1px solid #ffffff;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-atestado:hover { background: #ffffff; color: #1e3a8a; }
+
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .admin-main-layout { padding: 30px 20px; }
+  .admin-grid { grid-template-columns: 1fr; }
+}
+
+
 /* ======== DROPDOWN PERFIL ======== */
 .dropdown {
   position: absolute;
@@ -678,7 +1036,7 @@ body {
 
 .dropdown-header strong {
   display: block;
-  color: #1e3a8a;
+  color: #1e40af;
   font-size: 15px;
   font-weight: 600;
   white-space: nowrap;
@@ -833,7 +1191,7 @@ body {
 
 .texto-container h1 {
   font-family: sans-serif;
-  font-size: 1.8rem;      /* Tamanho mais equilibrado */
+  font-size: 1.5rem;      /* Tamanho mais equilibrado */
   color: #1a2a4e;         /* O azul marinho elegante */
   line-height: 1.1;
   margin: 0;
@@ -923,6 +1281,126 @@ body {
   from { opacity: 0; transform: scale(1.05); }
   to { opacity: 1; transform: scale(1); }
 }
+
+
+
+/* ===== MODAL INFORMAÇÕES USUÁRIOS ===== */
+#modalUsuarios {
+  display: none; 
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px); /* Efeito de desfoque no fundo */
+}
+
+#modalUsuarios .modal-content {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 480px;
+  padding: 50px 40px 40px;
+  position: relative;
+  margin: 5% auto;
+}
+
+/* Título */
+#modalUsuarios h2 {
+  margin: 0 0 30px 0;
+  color: #1e3a8a;
+  font-size: 28px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Botão de fechar */
+#modalUsuarios .close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: 300;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+#modalUsuarios .close:hover {
+  color: #1e40af;
+}
+
+/* Container da Lista de Usuários */
+#listaUsuarios {
+  max-height: 400px;
+  overflow-y: auto; /* Scroll caso tenha muitos usuários */
+  padding-right: 5px;
+}
+
+/* Item de Usuário Individual (Seguindo o estilo dos containers de matérias) */
+.usuario-card {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+  text-align: left;
+  transition: border-color 0.3s;
+}
+
+.usuario-card:hover {
+  border-color: #4169E1;
+}
+
+.usuario-card p {
+  margin: 5px 0;
+  color: #334155;
+  font-size: 14px;
+}
+
+.usuario-card .label-nome {
+  display: block;
+  color: #1e3a8a;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.usuario-card strong {
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Botão de Fechar/OK (Baseado no save-account-button) */
+.btn-fechar-modal {
+  margin-top: 10px;
+  width: 100%;
+  padding: 14px;
+  background: #4169E1;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-fechar-modal:hover {
+  background: #3354c4;
+  transform: translateY(-2px);
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  #modalUsuarios .modal-content {
+    margin: 15px auto;
+    padding: 40px 24px 30px;
+  }
+}
+
+
 
 /* =============== FOLDERS ============== */
 .folders{max-width:900px;margin:18px auto;padding:0 8px}
@@ -1165,4 +1643,36 @@ body {
   background-color: #1e1e1e !important;
   color: #ffffff !important;
   border: 1px solid #475569 !important;
+}
+
+
+/* Bolinha de Notificação na Foto */
+.adm-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #ef4444; /* Vermelho Alerta */
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid var(--bg-principal);
+  z-index: 10;
+}
+
+/* Ajuste para o item de ADM no Dropdown (caso queira estilizar o link) */
+#open-adm-panel {
+  color: #1e3a8a;
+  font-weight: 700;
+  border-left: 3px solid #ef4444;
+  padding-left: 8px;
+}
+
+[data-theme="dark"] #open-adm-panel {
+  color: #93c5fd;
 }
