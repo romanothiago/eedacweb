@@ -678,6 +678,81 @@ function openBoletim(){
     alert("Boletim salvo localmente!");
   }
 
+// --- CONFIGURAÇÕES ---
+const SENHA_MESTRA = "1234"; 
+
+// --- ELEMENTOS ---
+const perfilModal = document.getElementById("perfil-modal");
+const passwordModal = document.getElementById("password-modal");
+const admModal = document.getElementById("adm-modal");
+
+const btnAbrirProfessor = document.getElementById("uploadLessonBtn");
+const btnAbrirSenha = document.getElementById("btn-abrir-adm"); // Abre a modal de senha
+const btnConfirmarSenha = document.getElementById("btn-confirmar-senha");
+
+const inputSenha = document.getElementById("input-senha-adm");
+const textoErro = document.getElementById("erro-senha");
+
+// Botões de fechar
+const btnFecharPerfil = document.getElementById("close-perfil");
+const btnFecharSenha = document.getElementById("close-password");
+const btnFecharAdm = document.getElementById("close-adm");
+
+// --- LÓGICA MODAL PROFESSOR ---
+if (btnAbrirProfessor) {
+  btnAbrirProfessor.addEventListener("click", (e) => {
+    e.preventDefault();
+    perfilModal.style.display = "flex";
+  });
+}
+
+// --- LÓGICA DE ACESSO AO ADM ---
+
+// 1. Clica no botão e abre a modal de SENHA
+if (btnAbrirSenha) {
+  btnAbrirSenha.addEventListener("click", () => {
+    inputSenha.value = ""; // Limpa o campo
+    textoErro.style.display = "none"; // Esconde erro anterior
+    passwordModal.style.display = "flex";
+    inputSenha.focus(); // Coloca o cursor no campo automaticamente
+  });
+}
+
+// 2. Valida a senha ao clicar em "Entrar"
+btnConfirmarSenha.addEventListener("click", () => {
+  validarAcesso();
+});
+
+// 3. Permite apertar "Enter" no teclado para entrar
+inputSenha.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    validarAcesso();
+  }
+});
+
+function validarAcesso() {
+  if (inputSenha.value === SENHA_MESTRA) {
+    passwordModal.style.display = "none"; // Fecha a modal de senha
+    admModal.style.display = "flex";      // Abre o Painel ADM
+  } else {
+    textoErro.style.display = "block";    // Mostra mensagem de erro
+    inputSenha.value = "";
+  }
+}
+
+// --- FECHAR MODAIS ---
+if (btnFecharPerfil) btnFecharPerfil.onclick = () => perfilModal.style.display = "none";
+if (btnFecharSenha) btnFecharSenha.onclick = () => passwordModal.style.display = "none";
+if (btnFecharAdm) btnFecharAdm.onclick = () => admModal.style.display = "none";
+
+// Fechar ao clicar fora de qualquer uma
+window.onclick = (event) => {
+  if (event.target == perfilModal) perfilModal.style.display = "none";
+  if (event.target == passwordModal) passwordModal.style.display = "none";
+  if (event.target == admModal) admModal.style.display = "none";
+};
+
+
   // eventos
   closeBtn.addEventListener("click", ()=> modal.remove());
   modal.addEventListener("click", (e) => { if(e.target === modal) modal.remove(); });
@@ -782,6 +857,7 @@ if (closeProfessor) {
 window.addEventListener("click", (e) => {
   if (e.target === modalProfessor) modalProfessor.style.display = "none";
 });
+
 
 
     // 1. FUNÇÃO PARA SALVAR
@@ -1043,3 +1119,356 @@ window.addEventListener('click', (e) => {
         settingsModal.style.display = "flex";
     }
 });
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const btnAbrirSenha = document.getElementById('btn-abrir-adm');
+    const modalSenha = document.getElementById('modal-senha');
+    const modalAdm = document.getElementById('modal-adm-principal');
+    
+    const inputSenha = document.getElementById('input-senha-adm');
+    const btnValidar = document.getElementById('btn-validar-senha');
+    const erroMsg = document.getElementById('erro-senha');
+
+    const SENHA_MESTRA = "supimpa"; // Defina sua senha aqui
+
+    // Abrir modal de senha
+    btnAbrirSenha.onclick = () => {
+        modalSenha.style.display = 'block';
+        inputSenha.focus();
+    };
+
+    // Validar Senha
+    btnValidar.onclick = () => {
+        if (inputSenha.value === SENHA_MESTRA) {
+            modalSenha.style.display = 'none'; // Fecha senha
+            modalAdm.style.display = 'block';   // Abre painel
+            inputSenha.value = '';             // Limpa campo
+        } else {
+            erroMsg.style.display = 'block';
+            inputSenha.style.borderColor = 'red';
+        }
+    };
+
+    // Fechar ao clicar no (X)
+    document.getElementById('close-senha').onclick = () => modalSenha.style.display = 'none';
+    document.getElementById('close-adm').onclick = () => modalAdm.style.display = 'none';
+
+    // Fechar ao clicar fora da modal
+    window.onclick = (event) => {
+        if (event.target == modalSenha) modalSenha.style.display = 'none';
+        if (event.target == modalAdm) modalAdm.style.display = 'none';
+    };
+});
+
+//Acesso a informações
+
+const btn = document.getElementById("btnAbrirModal");
+const modal = document.getElementById("modalUsuarios");
+const span = document.getElementsByClassName("close")[0];
+const listaContainer = document.getElementById("listaUsuarios");
+
+btn.onclick = function() {
+    // 1. Puxar dados do localStorage
+    const dadosRaw = localStorage.getItem('usuarios');
+    const usuarios = dadosRaw ? JSON.parse(dadosRaw) : [];
+
+    // 2. Ordenar por ordem alfabética (Nome)
+    usuarios.sort((a, b) => a.nome.localeCompare(b.nome));
+
+    // 3. Limpar lista anterior e renderizar
+    listaContainer.innerHTML = "";
+
+    if (usuarios.length === 0) {
+        listaContainer.innerHTML = "<p>Nenhum usuário encontrado.</p>";
+    } else {
+        usuarios.forEach(user => {
+            const div = document.createElement("div");
+            div.className = "usuario-item";
+            div.innerHTML = `
+                <p><span class="nome-label">Nome:</span> ${user.nome}</p>
+                <p><strong>Email:</strong> ${user.email}</p>
+                <p><strong>Telefone:</strong> ${user.telefone}</p>
+            `;
+            listaContainer.appendChild(div);
+        });
+    }
+
+    modal.style.display = "block";
+}
+
+// Fechar ao clicar no 'X'
+span.addEventListener('click', () => {
+    modal.style.display = "none";
+});
+
+// Fechar ao clicar fora da modal
+window.addEventListener('click', (event) => {
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+});
+
+
+// =============================== ChatBot Lógica =====================================
+
+
+const jb_faq = {
+  "Como faço a matrícula?": "A matrícula pode ser realizada na secretaria da escola com os documentos necessários.",
+  "Quais documentos preciso?": "RG, CPF, comprovante de residência, certidão de nascimento e histórico escolar.",
+  "Como vejo minhas notas?": "As notas podem ser consultadas clicando na sua foto de perfil e em seguida em *Boletim*. Insira seu nome, matéria e bimestre desejado e, por fim, clique em *Consultar*",
+  "Qual é o horário das aulas?": "Os horários estão disponíveis na cortiça em frente à direção.",
+  "Como justificar minha ausência?": "Você pode entrar em contato com a direção e levar seu atestado até o diretor(a) lá presente. Em breve, você poderá enviar seu atestado por aqui, espere e verá!"
+  // +Perguntas
+};
+
+function jb_alternarChat() {
+  const modal = document.getElementById("jbChatModal");
+  const isAberto = modal.style.display === "flex";
+
+  if (isAberto) {
+    modal.style.display = "none";
+  } else {
+    modal.style.display = "flex";
+    jb_inicializar(); // Garante que o conteúdo apareça ao abrir
+  }
+}
+
+function jb_inicializar() {
+  const body = document.getElementById("jbChatBody");
+  
+  // Mensagem inicial da Júlia
+  body.innerHTML = `
+    <div class="jb-msg jb-msg-bot">
+      <strong>Júlia:</strong><br>
+      Olá, sou Júlia e vou tirar suas dúvidas. O que precisa saber hoje?
+    </div>
+  `;
+
+  // Cria o container de botões
+  const containerBotoes = document.createElement("div");
+  containerBotoes.className = "jb-options-container";
+  containerBotoes.id = "jbOpcoesAtivas";
+
+  // Insere os botões de perguntas
+  Object.keys(jb_faq).forEach(pergunta => {
+    const btn = document.createElement("button");
+    btn.className = "jb-btn-question";
+    btn.innerText = pergunta;
+    btn.onclick = () => jb_responder(pergunta);
+    containerBotoes.appendChild(btn);
+  });
+
+  body.appendChild(containerBotoes);
+  body.scrollTop = body.scrollHeight;
+}
+
+function jb_responder(pergunta) {
+  const body = document.getElementById("jbChatBody");
+  
+  // Remove botões antigos para não poluir
+  const antigo = document.getElementById("jbOpcoesAtivas");
+  if (antigo) antigo.remove();
+
+  // Adiciona pergunta do usuário
+  body.innerHTML += `
+    <div class="jb-msg jb-msg-user">
+      ${pergunta}
+    </div>
+  `;
+
+  // Adiciona resposta da Júlia (Simulando um pequeno delay para parecer natural)
+  setTimeout(() => {
+    body.innerHTML += `
+      <div class="jb-msg jb-msg-bot">
+        <strong>Júlia:</strong><br>
+        ${jb_faq[pergunta]}
+      </div>
+    `;
+    
+    // Reapresenta as opções para nova dúvida
+    jb_mostrarOpcoesNovamente();
+    body.scrollTop = body.scrollHeight;
+  }, 300);
+}
+
+function jb_mostrarOpcoesNovamente() {
+  const body = document.getElementById("jbChatBody");
+  const container = document.createElement("div");
+  container.className = "jb-options-container";
+  container.id = "jbOpcoesAtivas";
+
+  Object.keys(jb_faq).forEach(pergunta => {
+    const btn = document.createElement("button");
+    btn.className = "jb-btn-question";
+    btn.innerText = pergunta;
+    btn.onclick = () => jb_responder(pergunta);
+    container.appendChild(btn);
+  });
+
+  body.appendChild(container);
+  body.scrollTop = body.scrollHeight;
+}
+
+ 
+
+// ================== SISTEMA DE SIMULADOS ==================
+
+// Funções auxiliares para persistência dos simulados
+function loadSimulados() {
+    return JSON.parse(localStorage.getItem("sistema_simulados") || "{}");
+}
+
+function saveSimulados(simulados) {
+    localStorage.setItem("sistema_simulados", JSON.stringify(simulados));
+}
+
+// Popular o select de turmas da modal usando a sua constante global TURMAS
+function popularSelectTurmas() {
+    const selectTurma = document.getElementById('simulado-turma');
+    if (!selectTurma || selectTurma.options.length > 1) return; // Evita duplicar
+    
+    if (typeof TURMAS !== 'undefined') {
+        TURMAS.forEach(t => {
+            const opt = document.createElement('option');
+            opt.value = t;
+            opt.textContent = t;
+            selectTurma.appendChild(opt);
+        });
+    }
+}
+
+// Vinculação do botão da barra de navegação/menu
+const linkSimulados = document.getElementById('simulados');
+const simuladoModal = document.getElementById('simulado-modal');
+const btnAcaoSimulado = document.getElementById('btn-acao-simulado');
+const containerQuestoes = document.getElementById('questoes-container');
+
+if (linkSimulados) {
+    linkSimulados.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (simuladoModal) {
+            simuladoModal.style.display = 'flex';
+            popularSelectTurmas();
+            // Reseta a modal ao abrir
+            containerQuestoes.innerHTML = "";
+            btnAcaoSimulado.textContent = "Carregar Simulado";
+        }
+        if (typeof dropdown !== 'undefined' && dropdown) dropdown.style.display = 'none';
+    });
+}
+
+if (document.getElementById('simulado-close')) {
+    document.getElementById('simulado-close').addEventListener('click', () => {
+        if (simuladoModal) simuladoModal.style.display = 'none';
+    });
+}
+
+// Ação Principal: Carregar / Salvar / Corrigir
+if (btnAcaoSimulado) {
+    btnAcaoSimulado.addEventListener('click', () => {
+        const username = getLoggedInUsername();
+        const users = loadUsers();
+        const user = users.find(u => u.username === username);
+
+        if (!user) {
+            alert("Você precisa estar logado para acessar os simulados!");
+            return;
+        }
+
+        const materia = document.getElementById('simulado-materia').value;
+        const turma = document.getElementById('simulado-turma').value;
+
+        if (!materia || !turma) {
+            alert("Por favor, selecione a matéria e a turma.");
+            return;
+        }
+
+        // Chave única para identificar este simulado específico
+        const chaveSimulado = `${materia}_${turma}`;
+        const todosSimulados = loadSimulados();
+
+        if (btnAcaoSimulado.textContent === "Carregar Simulado") {
+            renderizarQuestoesForm(user.userType, todosSimulados[chaveSimulado]);
+        } else if (user.userType === "professor") {
+            salvarDadosSimulado(chaveSimulado, todosSimulados);
+        } else if (user.userType === "aluno") {
+            checarResultadoAluno(todosSimulados[chaveSimulado]);
+        }
+    });
+}
+
+// Renderiza a interface baseado em quem está acessando
+function renderizarQuestoesForm(userType, simuladoExistente) {
+    containerQuestoes.innerHTML = '';
+
+    for (let i = 1; i <= 5; i++) {
+        const div = document.createElement('div');
+        div.style.marginBottom = "15px";
+        
+        // Dados recuperados ou em branco
+        const perguntaSalva = simuladoExistente ? simuladoExistente[`q${i}`] : "";
+        const respostaSalva = simuladoExistente ? simuladoExistente[`r${i}`] : "";
+
+        if (userType === "professor") {
+            div.innerHTML = `
+                <p style="margin:5px 0 2px 0;"><strong>Questão ${i}:</strong></p>
+                <textarea class="simulado-input pergunta-input" data-questao="${i}" placeholder="Digite o enunciado da questão..." style="width:100%; min-height:40px;">${perguntaSalva}</textarea>
+                <input type="text" class="simulado-input resposta-input" data-resposta="${i}" placeholder="Gabarito / Resposta Certa" style="width:100%;" value="${respostaSalva}">
+            `;
+            btnAcaoSimulado.textContent = "Salvar Conteúdo";
+        } else if (userType === "aluno") {
+            if (!simuladoExistente) {
+                containerQuestoes.innerHTML = `<p style="color:red; text-align:center; padding:10px;">Nenhum simulado foi cadastrado para esta matéria e turma ainda.</p>`;
+                return;
+            }
+            div.innerHTML = `
+                <p style="margin:5px 0 2px 0;"><strong>Questão ${i}:</strong> ${perguntaSalva}</p>
+                <input type="text" class="simulado-input aluno-resposta-input" data-aluno-resp="${i}" placeholder="Sua resposta aqui..." style="width:100%;">
+            `;
+            btnAcaoSimulado.textContent = "Checar Resultado";
+        }
+        containerQuestoes.appendChild(div);
+    }
+}
+
+// Salva o que o professor digitou
+function salvarDadosSimulado(chaveSimulado, todosSimulados) {
+    const novosDados = {};
+    
+    for (let i = 1; i <= 5; i++) {
+        const pInput = document.querySelector(`.pergunta-input[data-questao="${i}"]`);
+        const rInput = document.querySelector(`.resposta-input[data-resposta="${i}"]`);
+        
+        novosDados[`q${i}`] = pInput ? pInput.value.trim() : "";
+        novosDados[`r${i}`] = rInput ? rInput.value.trim() : "";
+    }
+
+    todosSimulados[chaveSimulado] = novosDados;
+    saveSimulados(todosSimulados);
+    
+    alert("Simulado gravado e atualizado para os alunos desta turma!");
+    if (simuladoModal) simuladoModal.style.display = 'none';
+}
+
+// Valida as respostas do aluno contra o gabarito
+function checarResultadoAluno(simuladoExistente) {
+    if (!simuladoExistente) return;
+    
+    let acertos = 0;
+    
+    for (let i = 1; i <= 5; i++) {
+        const alunoInput = document.querySelector(`.aluno-resposta-input[data-aluno-resp="${i}"]`);
+        const respostaAluno = alunoInput ? alunoInput.value.trim().toLowerCase() : "";
+        const respostaCorreta = simuladoExistente[`r${i}`].trim().toLowerCase();
+
+        if (respostaAluno !== "" && respostaAluno === respostaCorreta) {
+            acertos++;
+        }
+    }
+    
+    alert(`Fim do simulado!\nVocê acertou ${acertos} de 5 questões.`);
+    if (simuladoModal) simuladoModal.style.display = 'none';
+}
