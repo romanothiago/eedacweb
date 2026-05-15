@@ -1228,8 +1228,8 @@ window.addEventListener('click', (event) => {
 
 
 const jb_faq = {
-  "Como faço a matrícula?": "A matrícula pode ser realizada na secretaria da escola com os documentos necessários.",
-  "Quais documentos preciso?": "RG, CPF, comprovante de residência, certidão de nascimento e histórico escolar.",
+  "Como faço a matrícula?": "A matrícula pode ser realizada na secretaria da escola com os documentos necessários dentro da janela anual prevista.",
+  "Quais documentos preciso?": "RG, CPF, comprovante de residência, certidão de nascimento e histórico escolar do seu ensino fundamental.",
   "Como vejo minhas notas?": "As notas podem ser consultadas clicando na sua foto de perfil e em seguida em *Boletim*. Insira seu nome, matéria e bimestre desejado e, por fim, clique em *Carregar*",
   "Qual é o horário das aulas?": "Os horários estão disponíveis na cortiça em frente à direção.",
   "Como justificar minha ausência?": "Você pode entrar em contato com a direção e levar seu atestado até o diretor(a) lá presente. Em breve, você poderá enviar seu atestado por aqui, espere e verá!"
