@@ -31,7 +31,32 @@
     <ul id="search-results" class="search-results" aria-live="polite"></ul>
   </header>
 
+
+<!-- ChatBot -->
+
+<!-- Botão Flutuante Moderno -->
+<button class="jb-floating-btn" onclick="jb_alternarChat()" title="Suporte">
+  <span class="jb-icon">💬</span>
+  <span class="jb-pulse"></span>
+</button>
+
+<!-- Modal Fullscreen com Namespace -->
+<div class="jb-modal-overlay" id="jbChatModal">
+  <div class="jb-modal-header">
+    <div class="jb-user-info">
+      <div class="jb-avatar">J</div>
+      <span>Júlia - Suporte</span>
+    </div>
+    <button class="jb-close-btn" onclick="jb_alternarChat()">&times;</button>
+  </div>
+
+  <div class="jb-chat-body" id="jbChatBody">
+    <!-- O conteúdo será injetado aqui pelo jb_inicializar() -->
+  </div>
+</div>
+
 <script>
+
 // ==================== SISTEMA DE LINKS ====================
 
 const STORAGE_KEY = "videoLinks";
@@ -404,7 +429,7 @@ window.onload = carregarLinks;
     <div class="main-folders">
       <div class="main-folder">
         <button class="main-folder-btn">
-          <span class="arrow">›</span>Quem somos?
+          <span class="arrow"></span>Quem somos?
         </button>
         <div class="main-folder-content">
           <p>Nós somos a Escola Estadual Desembargador Augusto Costa, situada no município de Olivença, AL.</p>
@@ -413,7 +438,7 @@ window.onload = carregarLinks;
 
       <div class="main-folder">
         <button class="main-folder-btn">
-          <span class="arrow">›</span> Nossos Itinerários
+          <span class="arrow"></span> Nossos Itinerários
         </button>
         <div class="main-folder-content">
           <p>Nossas materias adicionais com a implementação do novo ensino médio incluem: Projeto de Vida, Eletiva 1 e 2 (exceto para turmas técnicas)...</p>
@@ -422,13 +447,15 @@ window.onload = carregarLinks;
 
       <div class="main-folder">
         <button class="main-folder-btn">
-          <span class="arrow">›</span> Nossas Regras
+          <span class="arrow"></span> Nossas Regras
         </button>
         <div class="main-folder-content">
           <p>Uma das nossas diretrizes mais claras é referente a nova lei que regula o uso de aparelhos conectáveis a Bluetooth ou wi-fi. Estamos vigilantes a tal questão com o uso das câmeras junto a colaboração dos nossos professores.</p>
         </div>
       </div>
     </div>
+
+
 
   <!-- ======== Dropdown Perfil ======== -->
   <div id="dropdownMenu" class="dropdown" style="display:none;">
@@ -439,6 +466,7 @@ window.onload = carregarLinks;
     <a href="#" id="view-report">Boletim</a>
     <a href="#" id="configBtn">Configurações</a>
     <a href="#" id="open-teacher-area">Área dos Professores</a>
+    <a href="#" id="simulados">Simulados</a>
     <a href="#" id="logoutBtn">Sair</a>
   </div>
   
@@ -473,7 +501,6 @@ window.onload = carregarLinks;
           <select id="user-type" name="user-type">
             <option value="aluno" selected>Aluno</option>
             <option value="professor">Professor</option>
-            <option value="administrador">administrador</option>
           </select>
 
 <div id="keySection" style="display:none;">
@@ -512,6 +539,38 @@ window.onload = carregarLinks;
       <button id="save-account-button">Salvar</button>
     </div>
   </div>
+
+<!-- Aba de Simulados -->
+<div id="simulado-modal" class="cfg-overlay" style="display: none;">
+  <div class="cfg-content">
+    <span class="cfg-close" id="simulado-close">&times;</span>
+    <h2 class="cfg-title">Simulados</h2>
+    
+    <div class="cfg-container-azul">
+      <!-- Select de Matérias -->
+      <select id="simulado-materia" class="simulado-input" style="background-color: white; color: black;">
+        <option value="">Selecione a Matéria</option>
+        <option value="Matemática">Matemática</option>
+        <option value="Português">Português</option>
+        <option value="Informática">Informática</option>
+      </select>
+      
+      <!-- Select de Turmas (Baseado no seu array TURMAS) -->
+      <select id="simulado-turma" class="simulado-input" style="background-color: white; color: black; margin-top: 10px;">
+        <option value="">Selecione a Turma</option>
+        <!-- Será preenchido dinamicamente pelo JS usando suas TURMAS -->
+      </select>
+    </div>
+
+    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ccc;">
+
+    <div id="questoes-container" style="max-height: 300px; overflow-y: auto; margin-bottom: 20px;">
+      <!-- Inputs do professor ou perguntas do aluno vão aqui -->
+    </div>
+    
+    <button id="btn-acao-simulado" class="btn-azul-escuro">Carregar Simulado</button>
+  </div>
+</div>
 
 
 <!-- Configurações -->
@@ -579,7 +638,7 @@ window.onload = carregarLinks;
 </div>
 
   
-<!-- ===== MODAL DE PERFIL (UPLOAD DE AULAS) ===== -->
+<!-- ===== Modal professor ===== -->
 <div id="perfil-modal" class="modal" style="display:none;">
   <div class="modal-content" style="max-width: 450px;">
     <span id="close-perfil" class="close">&times;</span>
@@ -596,17 +655,16 @@ window.onload = carregarLinks;
           <option value="">Selecione a matéria...</option>
           <option>Matemática</option>
           <option>Português</option>
+          <option>Inglês</option>
           <option>Física</option>
           <option>Química</option>
-          <option>Biologia</option>
           <option>História</option>
-          <option>Geografia</option>
-          <option>Inglês</option>
-          <option>Artes</option>
-          <option>Educação Física</option>
+          <option>Geograia</option>
+          <option>Biologia</option>
+          <option>Educação Física </option>
           <option>Filosofia</option>
           <option>Sociologia</option>
-          <option>Projeto de Vida</option>
+          <option>Projeto de vida</option>
           <option>Informática</option>
           <option>Comércio</option>
         </select>
@@ -623,32 +681,55 @@ window.onload = carregarLinks;
           Salvar Link na Matéria
         </button>
       </form>
+
+
+      <p class="admin-note">Acesso restrito:</p>
+<!-- Botão de Acesso -->
+<button id="btn-abrir-adm" class="admin-access-btn">Painel do ADM</button>
+
+<!-- 1. Modal de Senha -->
+<div id="modal-senha" class="modal">
+    <div class="modal-content admin-mini-modal">
+        <span class="close" id="close-senha">&times;</span>
+        <h3>Acesso Restrito</h3>
+        <input type="password" id="input-senha-adm" placeholder="Digite a senha...">
+        <button id="btn-validar-senha">Entrar</button>
+        <p id="erro-senha" style="color: red; display: none; font-size: 12px; margin-top: 10px;">Senha incorreta!</p>
+    </div>
+</div>
+
+<!-- 2. Modal Real do ADM (O que abre após a senha) -->
+<div id="modal-adm-principal" class="modal">
+    <div class="modal-content admin-main-layout">
+        <span class="close" id="close-adm">&times;</span>
+        <h2>Painel Administrativo</h2>
+        <hr>
+        
+        <div class="admin-grid">
+
+            <!-- Coluna de Status/Ações Rápidas -->
+            <div class="admin-card">
+                <h3>Resumo do Sistema</h3>
+                <button class="btn-info" id="btnAbrirModal">Informações dos usuários</button>
+
+                <!-- Estrutura da Modal -->
+<div id="modalUsuarios" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Lista de Usuários</h2>
+        </div>
+    </div>
+</div>
+                <button class="btn-atestado">Analisar justificativas</button>
+            </div>
+        </div>
+    </div>
+</div>
+
     </div>
   </div>
 </div>
 
-  <!-- ===== SCRIPT PARA ABRIR/FECHAR ===== -->
-  <script>
-    const perfilModal = document.getElementById("perfil-modal");
-    const uploadLessonBtn = document.getElementById("uploadLessonBtn");
-    const closePerfil = document.getElementById("close-perfil");
-
-    if (uploadLessonBtn) {
-      uploadLessonBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        perfilModal.style.display = "flex";
-      });
-    }
-
-    closePerfil.onclick = () => perfilModal.style.display = "none";
-    window.onclick = e => { if (e.target === perfilModal) perfilModal.style.display = "none"; };
-  </script>
-  
-      <div id="upload-section" style="display:none; margin-top:15px;">
-        <p>Upload do boletim (base para professores)</p>
-        <textarea id="admin-boletins" placeholder="Formato: turma;aluno;disciplina;nota" style="width:100%; height:100px;"></textarea>
-        <button id="upload-boletins">Enviar boletins</button>
-      </div>
 
 <!-- Sair -->
 
