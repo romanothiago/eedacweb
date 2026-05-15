@@ -678,6 +678,18 @@ function openBoletim(){
     alert("Boletim salvo localmente!");
   }
 
+// 1. Fecha ao clicar no botão X
+  closeBtn.addEventListener("click", () => {
+    modal.remove();
+  });
+
+  // 2. Fecha ao clicar fora da área branca (no fundo escuro/transparente)
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.remove();
+    }
+  });
+  
 // --- CONFIGURAÇÕES ---
 const SENHA_MESTRA = "1234"; 
 
